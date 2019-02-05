@@ -25,3 +25,6 @@ yarn-error.log*
 
 src/aws-exports.js
 src/aws-exports.ts
+
+.amplifyrc
+/amplify
