@@ -1,0 +1,22 @@
+.home {
+  padding-top: 36px;
+  position: relative;
+
+  .sign-out {
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .gql-chat-area {
+    .title {
+      font-size: 1.5rem;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+.home
+  //- img(src="@/assets/logo.png", alt="Vue logo")
+  //- .home-title {{ homeTitle }}
+  .sign-out
+    img(src="../../assets/logout.png" @click="signOut")
+    //- amplify-sign-out
+  .gql-chat-area
+    AppSyncComponent(ref="appSync")

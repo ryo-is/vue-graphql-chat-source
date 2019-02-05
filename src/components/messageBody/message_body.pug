@@ -1,0 +1,9 @@
+.chat-message(:class="checkMessgeClass()")
+  .message-body(
+    @mouseover="changeDisplayDeleteBadge()"
+    @mouseout="changeDisplayDeleteBadge()"
+  ) {{ chatMessage.message_body }}
+    .delete-message-badge(v-show="displayDeleteBadge", @click="deleteMessage()")
+      i.el-icon-error
+  .user-id ID : {{ chatMessage.user_id }}
+    span.create-time {{ chatMessage.create_time }}

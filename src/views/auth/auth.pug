@@ -1,0 +1,11 @@
+.auth
+  //- el-row
+    //- img(src="@/assets/logo.png", alt="Vue logo")
+  .auth-title {{ authTitle }}
+  el-row(type="flex", justify="center")
+    el-col(:xs="24", :sm="14", :md="12", :lg="10", :xl="10")
+      amplify-sign-in.auto-min-width(v-if="displayMenu==='signIn'")
+      amplify-sign-up.auto-min-width(v-else-if="displayMenu==='signUp'", :signUpConfig="signUpConfig")
+      amplify-confirm-sign-up.auto-min-width(v-else-if="displayMenu==='confirmSignUp'")
+      amplify-forgot-password.auto-min-width(v-else-if="displayMenu==='forgotPassword'")
+  // amplify-sign-out

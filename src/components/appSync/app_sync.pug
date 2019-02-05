@@ -1,0 +1,18 @@
+.app-sync
+  .app-sync-title {{ appSyncTitle }}
+
+  .content-area
+    el-row(type="flex", justify="center")
+      el-col.chat-area(:xs="22", :sm="22", :md="20", :lg="18", :xl="18")
+        .chat-message-area
+          MessageBodyComponent(
+            v-for="item in chatMessages"
+            :key="item.user_id + item.create_time"
+            :chatMessage="item")
+          #lastChatMessage
+    el-col.input-mesage-area(:xs="22", :sm="22", :md="20", :lg="18", :xl="18")
+      el-row
+        el-col(:xs="16", :sm="18", :md="19", :lg="19", :xl="16", :offset="1")
+          el-input.input-area(v-model="putMessage")
+        el-col(:xs="4", :sm="3", :md="2", :lg="2", :xl="4", :offset="1")
+          el-button.submit-button(type="primary", round=true, @click="createMessage") Send
