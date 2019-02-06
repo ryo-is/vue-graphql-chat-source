@@ -25,18 +25,23 @@ message_body
 export default class AppSyncComponent extends Vue {
   public appSyncTitle: string = "GraphQL Chat App";
   public chatMessages: ChatMessagesType[] = [];
+  public displayButton: boolean = true;
   public othersChatMessages: ChatMessagesType[] = [];
   public myChatMessages: ChatMessagesType[] = [];
   public putMessage: string = "";
   public messageClass: string = "others-message";
+  public editMessageTime: string = "";
   public subCreateChatMessageClient: any = null;
   public subCreateChatMessageObservable: Observable<object> | null = null;
   public subDeleteChatMessageClient: any = null;
   public subDeleteChatMessageObservable: Observable<object> | null = null;
+  public subUpdateChatMessageClient: any = null;
+  public subUpdateChatMessageObservable: Observable<object> | null = null;
 
   public async created() {
     await this.createGqlSubscriber();
     await this.deleteGqlSubscriber();
+    await this.updateGqlSubscriber();
     await this.getMessages();
   }
 
@@ -60,6 +65,28 @@ export default class AppSyncComponent extends Vue {
       deleted: false
     })) as Observable<object>;
     this.subCreateChatMessageClient = this.subCreateChatMessageObservable.subscribe({
+      next: (result: any) => {
+        console.log(result.value.data);
+        this.getMessages();
+      },
+      error: (err: any) => {
+        console.error(err);
+      }
+    });
+  }
+
+  private async updateGqlSubscriber() {
+    const gqlParams: string = `
+      subscription subUpdateChatMessage {
+        onUpdateChatMessage {
+          ${chatMassageType}
+        }
+      }
+    `;
+    this.subUpdateChatMessageObservable = await API.graphql(graphqlOperation(gqlParams, {
+      deleted: false
+    })) as Observable<object>;
+    this.subUpdateChatMessageClient = this.subUpdateChatMessageObservable.subscribe({
       next: (result: any) => {
         console.log(result.value.data);
         this.getMessages();
@@ -134,5 +161,12 @@ export default class AppSyncComponent extends Vue {
     `;
     await API.graphql(graphqlOperation(gqlParams));
     this.putMessage = "";
+  }
+
+  public async updateMessage() {
+    const targetMessageComponent: any = this.$refs[this.editMessageTime] as MessageBodyComponent[];
+    await targetMessageComponent[0].editMessage(this.putMessage);
+    this.putMessage = "";
+    this.displayButton = true;
   }
 }
