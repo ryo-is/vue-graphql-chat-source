@@ -18,7 +18,7 @@ message_body
 export default class MessageBodyComponent extends Vue {
   @Prop() public chatMessage: ChatMessagesType;
 
-  public displayDeleteBadge: boolean = false;
+  public displayControlArea: boolean = false;
 
   public checkUserID() {
     return this.chatMessage.user_id === VueStore.state.userID;
@@ -26,7 +26,6 @@ export default class MessageBodyComponent extends Vue {
 
   /**
    * チャットメッセージのClassを切り替える
-   * @param user_id
    */
   public checkMessgeClass() {
     if (this.checkUserID()) {
@@ -36,9 +35,23 @@ export default class MessageBodyComponent extends Vue {
     }
   }
 
-  public changeDisplayDeleteBadge() {
+  /**
+   * メッセージ操作アイコンの位置決め
+   */
+  public checkIconPosition() {
     if (this.checkUserID()) {
-      this.displayDeleteBadge = !this.displayDeleteBadge;
+      return "end";
+    } else {
+      return "start";
+    }
+  }
+
+  /**
+   * メッセージ操作アイコンの表示切り替え
+   */
+  public changeDisplayControlIconArea() {
+    if (this.checkUserID()) {
+      this.displayControlArea = !this.displayControlArea;
     }
   }
 
