@@ -2,9 +2,10 @@
   .message-body(@click="changeDisplayControlIconArea()") {{ chatMessage.message_body }}
   .user-id ID : {{ chatMessage.user_id }}
     span.create-time {{ chatMessage.create_time }}
-  el-row.message-control-area(type="flex", :justify="checkIconPosition()" v-show="displayControlArea")
-    .edit-message-area.control-icon()
-      i.el-icon-edit
-    .delete-message-badge.control-icon(@click="deleteMessage()")
-      i.el-icon-delete
+  transition(name="el-fade-in-linear")
+    el-row.message-control-area(type="flex", :justify="checkIconPosition()", v-show="displayControlArea")
+      .edit-message-area.control-icon()
+        i.el-icon-edit
+      .delete-message-badge.control-icon(@click="deleteMessage()")
+        i.el-icon-delete
 
