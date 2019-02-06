@@ -1,3 +1,5 @@
+@import "../../config/config";
+
 .app-sync {
   margin: auto;
 
@@ -7,20 +9,20 @@
   }
 
   .content-area {
-    height: calc(70vh + 25px);
+    height: calc(80vh + 25px);
     position: relative;
 
     .chat-area {
-      background-color: #f8fceb;
+      background-color: $chat-area-background-color;
       border-radius: 12px 12px 0 0;
       box-sizing: border-box;
       margin: 24px auto 0;
-      height: 70vh;
+      height: 80vh;
       overflow-y: hidden;
       position: relative;
 
       .chat-message-area {
-        height: 70vh;
+        height: 80vh;
         overflow-y: scroll;
 
         &::-webkit-scrollbar {
@@ -35,7 +37,7 @@
     }
 
     .input-mesage-area {
-      background-color: #41b883;
+      background-color: $basic-green-color;
       border-radius: 0 0 8px 8px;
       bottom: -56px;
       left: 0;

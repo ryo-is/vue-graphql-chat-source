@@ -20,6 +20,9 @@ export default class MessageBodyComponent extends Vue {
 
   public displayControlArea: boolean = false;
 
+  /**
+   * ユーザID判定
+   */
   public checkUserID() {
     return this.chatMessage.user_id === VueStore.state.userID;
   }
@@ -53,6 +56,13 @@ export default class MessageBodyComponent extends Vue {
     if (this.checkUserID()) {
       this.displayControlArea = !this.displayControlArea;
     }
+  }
+
+  /**
+   * チャットメッセージの編集
+   */
+  public async editMessage() {
+    console.log("Edit Message");
   }
 
   /**

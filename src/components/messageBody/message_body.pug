@@ -4,7 +4,7 @@
     span.create-time {{ chatMessage.create_time }}
   transition(name="el-fade-in-linear")
     el-row.message-control-area(type="flex", :justify="checkIconPosition()", v-show="displayControlArea")
-      .edit-message-area.control-icon()
+      .edit-message-area.control-icon(@click="editMessage()")
         i.el-icon-edit
       .delete-message-badge.control-icon(@click="deleteMessage()")
         i.el-icon-delete
