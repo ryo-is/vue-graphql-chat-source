@@ -28,3 +28,7 @@ src/aws-exports.ts
 
 .amplifyrc
 /amplify
+
+.firebaserc
+firebase.json
+/.firebase
