@@ -64,7 +64,7 @@ export default class MessageBodyComponent extends Vue {
    * チャットメッセージ編集モードの開始
    */
   public changeEditMode() {
-    const parentComponent: AppSyncComponent = this.$parent.$parent.$parent;
+    const parentComponent: AppSyncComponent = this.$parent.$parent.$parent as AppSyncComponent;
     parentComponent.$data.putMessage = this.chatMessage.message_body;
     parentComponent.$data.editMessageTime = this.chatMessage.create_time;
     parentComponent.$data.displayButton = false;
@@ -75,7 +75,7 @@ export default class MessageBodyComponent extends Vue {
    * チャットメッセージ編集モードの終了
    */
   public exitEditMode() {
-    const parentComponent: AppSyncComponent = this.$parent.$parent.$parent;
+    const parentComponent: AppSyncComponent = this.$parent.$parent.$parent as AppSyncComponent;
     parentComponent.$data.putMessage = "";
     parentComponent.$data.editMessageTime = "";
     parentComponent.$data.displayButton = true;
