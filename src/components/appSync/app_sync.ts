@@ -75,6 +75,9 @@ export default class AppSyncComponent extends Vue {
     });
   }
 
+  /**
+   * メッセージ編集のsubscribe
+   */
   private async updateGqlSubscriber() {
     const gqlParams: string = `
       subscription subUpdateChatMessage {
@@ -163,6 +166,9 @@ export default class AppSyncComponent extends Vue {
     this.putMessage = "";
   }
 
+  /**
+   * チャットメッセージの編集
+   */
   public async updateMessage() {
     const targetMessageComponent: any = this.$refs[this.editMessageTime] as MessageBodyComponent[];
     await targetMessageComponent[0].editMessage(this.putMessage);

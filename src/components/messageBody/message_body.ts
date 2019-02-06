@@ -85,6 +85,7 @@ export default class MessageBodyComponent extends Vue {
 
   /**
    * チャットメッセージの編集
+   * @param messageBody
    */
   public async editMessage(messageBody: string) {
     if (this.checkUserID()) {
