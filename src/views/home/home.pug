@@ -1,8 +1,7 @@
 .home
   //- img(src="@/assets/logo.png", alt="Vue logo")
   //- .home-title {{ homeTitle }}
-  .sign-out
-    img(src="../../assets/logout.png" @click="signOut")
+  font-awesome-icon.sign-out(:icon="['fas', 'sign-out-alt']", @click="signOut()")
     //- amplify-sign-out
   .gql-chat-area
     AppSyncComponent(ref="appSync")
