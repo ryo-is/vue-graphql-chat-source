@@ -4,25 +4,50 @@
   margin: auto;
 
   .app-sync-title {
+    background-color: $basic-green-color;
     font-size: 2rem;
-    line-height: 3rem;
+    font-weight: bold;
+    line-height: 4rem;
+    text-shadow: 1px 1px 1px $chat-title-shadow-color;
   }
 
   .content-area {
-    height: calc(80vh + 25px);
+    height: calc(100vh - 4rem);
     position: relative;
+
+    .channel-area {
+      margin: 10px auto 0;
+      text-align: left;
+      width: 90%;
+
+      .parent-category {
+        border-bottom: 2px solid $basic-green-color;
+        font-size: 1.4rem;
+        font-weight: bold;
+        line-height: 2rem;
+      }
+
+      .child-category {
+        cursor: pointer;
+        font-size: 1.25rem;
+        margin: 10px 0;
+        padding-left: 2rem;
+
+        &.active {
+          font-weight: bold;
+        }
+      }
+    }
 
     .chat-area {
       background-color: $chat-area-background-color;
-      border-radius: 12px 12px 0 0;
       box-sizing: border-box;
-      margin: 24px auto 0;
-      height: 80vh;
+      height: calc(100vh - 4rem - 56px);
       overflow-y: hidden;
       position: relative;
 
       .chat-message-area {
-        height: 80vh;
+        height: calc(100vh - 4rem - 56px);
         overflow-y: scroll;
 
         &::-webkit-scrollbar {
@@ -38,7 +63,6 @@
 
     .input-mesage-area {
       background-color: $basic-green-color;
-      border-radius: 0 0 8px 8px;
       bottom: -56px;
       left: 0;
       line-height: 56px;

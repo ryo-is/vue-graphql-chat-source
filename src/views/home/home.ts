@@ -1,5 +1,4 @@
 import { Component, Vue } from "vue-property-decorator";
-import { AmplifyEventBus } from "aws-amplify-vue";
 import { Auth } from "aws-amplify";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import router from "@/router";
@@ -25,6 +24,7 @@ export default class Home extends Vue {
       const appSyncComponent: AppSyncComponent = this.$refs.appSync as AppSyncComponent;
       appSyncComponent.$data.subCreateChatMessageClient.unsubscribe();
       appSyncComponent.$data.subDeleteChatMessageClient.unsubscribe();
+      appSyncComponent.$data.subUpdateChatMessageClient.unsubscribe();
       return router.push("/auth");
     }).catch((err: any) => {
       console.error(err);

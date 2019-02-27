@@ -1,5 +1,6 @@
+@import "../../config/config";
+
 .home {
-  padding-top: 36px;
   position: relative;
 
   .sign-out {
@@ -11,12 +12,6 @@
 
     img {
       width: 100%;
-    }
-  }
-
-  .gql-chat-area {
-    .title {
-      font-size: 1.5rem;
     }
   }
 }
