@@ -3,7 +3,7 @@
 
   .content-area
     el-row
-      el-col(:span="4")
+      el-col.hidden-sm-and-down(:md="5", :lg="4", :xl="4")
         .channel-area
           .parent-category Channels
           .child-category.active All Users
@@ -14,7 +14,7 @@
           .child-category You
           .child-category Sato
           .child-category Iotan
-      el-col(:span="20")
+      el-col(:xs="24", :sm="24", :md="19", :lg="20", :xl="20")
         el-row
           el-col.chat-area(:span="24")
             .chat-message-area
