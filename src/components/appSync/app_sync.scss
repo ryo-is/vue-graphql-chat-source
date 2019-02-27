@@ -15,8 +15,9 @@
     height: calc(100vh - 4rem);
     position: relative;
 
-    .channel-area {
-      margin: 10px auto 0;
+    .channel-area,
+    .user-area {
+      margin: 20px auto 0;
       text-align: left;
       width: 90%;
 
