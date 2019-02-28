@@ -1,8 +1,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Auth } from "aws-amplify";
-import { CognitoUser } from "amazon-cognito-identity-js";
 import router from "@/router";
-import VueStore from "@/store";
 import AppSyncComponent from "@/components/appSync/AppSync.vue";
 
 @Component({
@@ -12,12 +10,6 @@ import AppSyncComponent from "@/components/appSync/AppSync.vue";
 })
 export default class Home extends Vue {
   public homeTitle: string = "Amplify Vue Demo";
-
-  public created() {
-    Auth.currentAuthenticatedUser().then((user: CognitoUser) => {
-      VueStore.commit("setUserID", user.getUsername());
-    });
-  }
 
   public signOut() {
     Auth.signOut().then(() => {

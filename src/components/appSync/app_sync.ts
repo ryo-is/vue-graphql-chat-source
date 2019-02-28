@@ -11,7 +11,7 @@ interface ChatMessagesType {
   message_body: string;
 }
 
-const chatMassageType: string = `
+const chatMassageItems: string = `
 user_id,
 create_time,
 message_body
@@ -57,7 +57,7 @@ export default class AppSyncComponent extends Vue {
     const gqlParams: string = `
       subscription subCreateChatMessage {
         onCreateChatMessage {
-          ${chatMassageType}
+          ${chatMassageItems}
         }
       }
     `;
@@ -82,7 +82,7 @@ export default class AppSyncComponent extends Vue {
     const gqlParams: string = `
       subscription subUpdateChatMessage {
         onUpdateChatMessage {
-          ${chatMassageType}
+          ${chatMassageItems}
         }
       }
     `;
@@ -107,7 +107,7 @@ export default class AppSyncComponent extends Vue {
     const gqlParams: string = `
       subscription subDeleteChatMessage {
         onDeleteChatMessage {
-          ${chatMassageType}
+          ${chatMassageItems}
         }
       }
     `;
@@ -133,7 +133,7 @@ export default class AppSyncComponent extends Vue {
       query list {
         listChatMessages(limit: 50) {
           items {
-            ${chatMassageType}
+            ${chatMassageItems}
           }
         }
       }
@@ -158,7 +158,7 @@ export default class AppSyncComponent extends Vue {
             message_body: "${this.putMessage}"
           }
         ) {
-          ${chatMassageType}
+          ${chatMassageItems}
         }
       }
     `;
