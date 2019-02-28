@@ -21,7 +21,6 @@ export class ChatUsers {
    * ユーザー取得
    */
   public static async getChatUsers() {
-    console.log(VueStore.state.userID);
     const gqlParams: string = `
       query getUsers {
         getChatUsers(user_id: "${VueStore.state.userID}") {
@@ -32,6 +31,10 @@ export class ChatUsers {
     const result: any = await API.graphql(graphqlOperation(gqlParams));
     return result.data.getChatUsers;
   }
+
+  // public static async listChatUser() {
+
+  // }
 
   /**
    * ユーザー作成
