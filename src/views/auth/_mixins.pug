@@ -1,0 +1,80 @@
+mixin _siginInView()
+  transition(name="el-fade-in-linear")
+    el-row(v-if="displayMenu==='signIn'")
+      el-col.sign-in.input-area(:xs="22", :sm="20", :md="16", :lg="14", :xl="12")
+        .title Sign In Account
+        .user-name.input
+          .tag UserName*
+          el-input(v-model="userName")
+        .password.input
+          .tag Password*
+          el-input(v-model="password", type="password")
+          .reset-password-msg Forgot your password?
+            span(@click="changeAuthViews('forgotPassword')") Reset Password
+        el-row
+          el-col(:span="12")
+            .signup-msg No account?
+              span(@click="changeAuthViews('signUp')") Create account
+          el-col.signin-button(:span="12")
+            el-button(type="info", @click="signIn()") Sign In
+
+mixin _signUpView()
+  transition(name="el-fade-in-linear")
+    el-row(v-if="displayMenu==='signUp'")
+      el-col.sign-up.input-area(:xs="22", :sm="20", :md="16", :lg="14", :xl="12")
+        .title Sign Up Account
+        .user-name.input
+          .tag UserName*
+          el-input(v-model="signUpUserName")
+        .password.input
+          .tag Password*
+          el-input(v-model="signUpPassword", type="password")
+        .email.input
+          .tag Email*
+          el-input(v-model="email")
+        el-row.signup-button-area
+          el-col(:span="12")
+            .signup-msg
+              span(@click="changeAuthViews('signIn')") Back to Sign In
+          el-col.signup-button(:span="12")
+            el-button(type="info", @click="signUp()") Sign Up
+
+mixin _confirmSignUpView()
+  transition(name="el-fade-in-linear")
+    el-row(v-if="displayMenu==='confirmSignUp'")
+      el-col.confirm-sign-up.input-area(:xs="22", :sm="20", :md="16", :lg="14", :xl="12")
+        .title Confirm Sign Up
+        .user-name.input
+          .tag UserName*
+          el-input(v-model="signUpUserName")
+        .confirmation-code.input
+          .tag Confirmation Code*
+          el-input(v-model="confirmationCode")
+        el-row.signup-button-area.input
+          el-col(:span="12")
+            .signup-msg
+              span(@click="changeAuthViews('signIn')") Back to Sign In
+          el-col.signup-button(:span="12")
+            el-button(type="info", @click="confirmSignUp()") Submit
+
+mixin _forgotPasswordView()
+  transition(name="el-fade-in-linear")
+    el-row(v-if="displayMenu==='forgotPassword'")
+      el-col.forgot-password.input-area(:xs="22", :sm="20", :md="16", :lg="14", :xl="12")
+        .title Reset your password
+        .user-name.input
+          .tag UserName*
+          el-input(v-model="userName")
+        .code.input
+          .tag Code*
+          el-input(v-model="code")
+        .password.input
+          .tag New Password*
+          el-input(v-model="newPassword", type="password")
+        el-row.signup-button-area
+          el-col(:span="12")
+            .signup-msg
+              span(@click="changeAuthViews('signIn')") Back to Sign In
+          el-col.signup-button(:span="12")
+            el-button(type="info") Send Code
+            el-button(type="info") Submit

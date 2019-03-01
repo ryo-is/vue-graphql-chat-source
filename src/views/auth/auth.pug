@@ -1,23 +1,9 @@
+include ./_mixins
+
 .auth
   .auth-title {{ authTitle }}
-  el-row(type="flex", justify="center")
-    el-col(:xs="24", :sm="14", :md="12", :lg="10", :xl="10")
-      amplify-sign-in.auto-min-width(v-if="displayMenu==='signIn'")
-      amplify-sign-up.auto-min-width(v-else-if="displayMenu==='signUp'", :signUpConfig="signUpConfig")
-      amplify-confirm-sign-up.auto-min-width(v-else-if="displayMenu==='confirmSignUp'")
-      amplify-forgot-password.auto-min-width(v-else-if="displayMenu==='forgotPassword'")
-
-  el-row(type="flex", justify="center")
-    el-col.auth-content-area(:xs="24", :sm="14", :md="12", :lg="10", :xl="10")
-      .sign-in(v-if="displayMenu==='signIn'")
-        .title Sign In Account
-        .user-name.input-area
-          .tag UserName*
-          el-input(v-model="userName")
-        .password.input-area
-          .tag Password*
-          el-input(v-model="password")
-        el-button(type="primary") SIGN IN
-      .sign-up(v-else-if="displayMenu==='signUp'") サインアップ
-      .confirm-sign-up(v-else-if="displayMenu==='confirmSignUp'") 検証コード
-      .forgot-password(v-else-if="displayMenu==='forgotPassword'") パスワードリセット
+  .auth-content-area
+    +_siginInView()
+    +_signUpView()
+    +_confirmSignUpView()
+    +_forgotPasswordView()

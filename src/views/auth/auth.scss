@@ -12,23 +12,73 @@
   }
 
   .auth-content-area {
-    padding: 15px;
-    text-align: left;
+    margin: auto;
+    padding: 15px 30px;
+
+    .input-area {
+      left: 0;
+      margin: auto;
+      position: absolute;
+      right: 0;
+    }
 
     .title {
       border-bottom: 3px solid $basic-green-color;
       font-size: 1.5rem;
       line-height: 2.5rem;
       padding-left: 1rem;
+      text-align: left;
     }
 
-    .input-area {
+    .input {
       font-size: 1.3rem;
       padding: 10px 40px;
 
       .tag {
         padding: 5px 1rem;
+        text-align: left;
       }
+
+      .reset-password-msg {
+        font-size: 1rem;
+        padding: 5px 1rem;
+        text-align: left;
+
+        span {
+          color: $basic-green-color;
+          cursor: pointer;
+          padding-left: .5rem;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .signup-msg {
+      font-size: 1.1rem;
+      line-height: 40px;
+      padding-left: 40px;
+      text-align: left;
+
+      span {
+        color: $basic-green-color;
+        cursor: pointer;
+        padding-left: .5rem;
+        text-decoration: underline;
+      }
+    }
+
+    .signin-button,
+    .signup-button {
+      padding-right: 40px;
+      text-align: right;
+
+      .el-button {
+        padding: 13px 36px;
+      }
+    }
+
+    .signup-button-area {
+      margin-top: 16px;
     }
   }
 }
