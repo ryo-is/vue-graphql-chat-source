@@ -1,3 +1,5 @@
+@import "../../config/config";
+
 .auth {
   .auth-title {
     font-size: 2rem;
@@ -7,5 +9,26 @@
   .auto-min-width {
     min-width: auto;
     width: 100%;
+  }
+
+  .auth-content-area {
+    padding: 15px;
+    text-align: left;
+
+    .title {
+      border-bottom: 3px solid $basic-green-color;
+      font-size: 1.5rem;
+      line-height: 2.5rem;
+      padding-left: 1rem;
+    }
+
+    .input-area {
+      font-size: 1.3rem;
+      padding: 10px 40px;
+
+      .tag {
+        padding: 5px 1rem;
+      }
+    }
   }
 }

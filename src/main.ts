@@ -8,6 +8,7 @@ import initialState from "./initial_state";
 import ElementUI from "element-ui";
 import locale from "element-ui/lib/locale/lang/ja";
 import "../node_modules/element-ui/lib/theme-chalk/index.css";
+import "./plugins/element.js";
 
 import Amplify, * as AmplifyModules from "aws-amplify";
 import { AmplifyPlugin } from "aws-amplify-vue";

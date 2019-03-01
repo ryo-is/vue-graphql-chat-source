@@ -7,4 +7,6 @@ export default class Auth extends Vue {
   public signUpConfig = {
     hiddenDefaults: ["phone_number"]
   };
+  public userName: string = "";
+  public password: string = "";
 }
