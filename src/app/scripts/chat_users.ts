@@ -32,10 +32,6 @@ export class ChatUsers {
     return result.data.getChatUsers;
   }
 
-  // public static async listChatUser() {
-
-  // }
-
   /**
    * ユーザー作成
    */

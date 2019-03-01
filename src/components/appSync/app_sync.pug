@@ -11,9 +11,7 @@
           .child-category Works
         .user-area
           .parent-category Users
-          .child-category tanaka (You)
-          .child-category sato
-          .child-category iotan
+          .child-category(v-for="item in chatUsers", :key="item.user_id") {{ item.user_id }}
       el-col(:xs="24", :sm="24", :md="19", :lg="20", :xl="20")
         el-row
           el-col.chat-area(:span="24")

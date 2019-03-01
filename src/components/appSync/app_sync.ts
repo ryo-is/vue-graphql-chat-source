@@ -11,10 +11,24 @@ interface ChatMessagesType {
   message_body: string;
 }
 
+interface ChatUsersType {
+  user_id: string;
+  last_login: string;
+  join_channels: string[];
+  friend_menbers: string[];
+}
+
 const chatMassageItems: string = `
 user_id,
 create_time,
 message_body
+`;
+
+const chatUsersItems: string = `
+user_id,
+last_login,
+join_channels,
+friend_menbers
 `;
 
 @Component({
@@ -24,6 +38,7 @@ message_body
 })
 export default class AppSyncComponent extends Vue {
   public appSyncTitle: string = "GraphQL Chat App";
+  public chatUsers: ChatUsersType[] = [];
   public chatMessages: ChatMessagesType[] = [];
   public displayButton: boolean = true;
   public othersChatMessages: ChatMessagesType[] = [];
@@ -42,6 +57,7 @@ export default class AppSyncComponent extends Vue {
     await this.createGqlSubscriber();
     await this.deleteGqlSubscriber();
     await this.updateGqlSubscriber();
+    await this.listChatUser();
     await this.getMessages();
   }
 
@@ -174,5 +190,19 @@ export default class AppSyncComponent extends Vue {
     await targetMessageComponent[0].editMessage(this.putMessage);
     this.putMessage = "";
     this.displayButton = true;
+  }
+
+  public async listChatUser() {
+    const gqlParams: string = `
+      query list {
+        listChatUsers(limit: 1000) {
+          items {
+            ${chatUsersItems}
+          }
+        }
+      }
+    `;
+    const result: any = await API.graphql(graphqlOperation(gqlParams));
+    this.chatUsers = result.data.listChatUsers.items;
   }
 }
