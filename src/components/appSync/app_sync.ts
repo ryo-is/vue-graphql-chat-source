@@ -37,21 +37,21 @@ friend_menbers
   }
 })
 export default class AppSyncComponent extends Vue {
-  public appSyncTitle: string = "GraphQL Chat App";
-  public chatUsers: ChatUsersType[] = [];
-  public chatMessages: ChatMessagesType[] = [];
-  public displayButton: boolean = true;
-  public othersChatMessages: ChatMessagesType[] = [];
-  public myChatMessages: ChatMessagesType[] = [];
-  public putMessage: string = "";
-  public messageClass: string = "others-message";
-  public editMessageTime: string = "";
-  public subCreateChatMessageClient: any = null;
-  public subCreateChatMessageObservable: Observable<object> | null = null;
-  public subDeleteChatMessageClient: any = null;
-  public subDeleteChatMessageObservable: Observable<object> | null = null;
-  public subUpdateChatMessageClient: any = null;
-  public subUpdateChatMessageObservable: Observable<object> | null = null;
+  public appSyncTitle: string = "GraphQL Chat App"; // Page title
+  public chatUsers: ChatUsersType[] = []; // Chat users values
+  public chatMessages: ChatMessagesType[] = []; // Chat messages values
+  public displayButton: boolean = true; // Display send / edit button flug
+  public othersChatMessages: ChatMessagesType[] = []; // Others chat message values
+  public myChatMessages: ChatMessagesType[] = []; // My chat message values
+  public putMessage: string = ""; // Put chat message value
+  public messageClass: string = "others-message"; // Message class value
+  public editMessageTime: string = ""; // Edit message time value
+  public subCreateChatMessageClient: any = null; // Create chat message subscription client
+  public subCreateChatMessageObservable: Observable<object> | null = null; // Create chat message subscription observable
+  public subDeleteChatMessageClient: any = null; // Delete chat message subscription client
+  public subDeleteChatMessageObservable: Observable<object> | null = null; // Delete chat message subscription observable
+  public subUpdateChatMessageClient: any = null; // Update chat message subscription client
+  public subUpdateChatMessageObservable: Observable<object> | null = null; // Update chat message subscription observable
 
   public async created() {
     await this.createGqlSubscriber();
@@ -192,6 +192,9 @@ export default class AppSyncComponent extends Vue {
     this.displayButton = true;
   }
 
+  /**
+   * チャットユーザー取得
+   */
   public async listChatUser() {
     const gqlParams: string = `
       query list {

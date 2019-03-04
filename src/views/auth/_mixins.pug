@@ -3,20 +3,21 @@ mixin _siginInView()
     el-row(v-if="displayMenu==='signIn'")
       el-col.sign-in.input-area(:xs="22", :sm="20", :md="16", :lg="14", :xl="12")
         .title Sign In Account
-        .user-name.input
-          .tag UserName*
-          el-input(v-model="userName")
-        .password.input
-          .tag Password*
-          el-input(v-model="password", type="password")
-          .reset-password-msg Forgot your password?
-            span(@click="changeAuthViews('forgotPassword')") Reset Password
-        el-row
-          el-col(:span="12")
-            .signup-msg No account?
-              span(@click="changeAuthViews('signUp')") Create account
-          el-col.signin-button(:span="12")
-            el-button(type="info", @click="signIn()") Sign In
+        form(@submit.prevent="signIn()")
+          .user-name.input
+            .tag UserName*
+            el-input(v-model="userName")
+          .password.input
+            .tag Password*
+            el-input(v-model="password", type="password")
+            .reset-password-msg Forgot your password?
+              span(@click="changeAuthViews('forgotPassword')") Reset Password
+          el-row
+            el-col(:span="12")
+              .signup-msg No account?
+                span(@click="changeAuthViews('signUp')") Create account
+            el-col.signin-button(:span="12")
+              el-button(type="info", native-type="submit") Sign In
 
 mixin _signUpView()
   transition(name="el-fade-in-linear")
@@ -65,10 +66,10 @@ mixin _forgotPasswordView()
         .user-name.input
           .tag UserName*
           el-input(v-model="userName")
-        .code.input
+        .code.input(v-show="resetPasswordInput")
           .tag Code*
           el-input(v-model="code")
-        .password.input
+        .password.input(v-show="resetPasswordInput")
           .tag New Password*
           el-input(v-model="newPassword", type="password")
         el-row.signup-button-area
@@ -76,5 +77,5 @@ mixin _forgotPasswordView()
             .signup-msg
               span(@click="changeAuthViews('signIn')") Back to Sign In
           el-col.signup-button(:span="12")
-            el-button(type="info") Send Code
-            el-button(type="info") Submit
+            el-button(type="info" v-show="!resetPasswordInput", @click="sendResetCode()") Send Code
+            el-button(type="info" v-show="resetPasswordInput", @click="resetPassword()") Submit

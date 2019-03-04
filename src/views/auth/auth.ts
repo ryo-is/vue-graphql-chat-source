@@ -11,19 +11,17 @@ import { ChatUsers, chatUsersType } from "./scripts/chat_users";
 
 @Component({})
 export default class AuthComponent extends Vue {
-  public displayMenu: string = "signIn";
-  public authTitle: string = "GraphQL Chat App";
-  public signUpConfig = {
-    hiddenDefaults: ["phone_number"]
-  };
-  public userName: string = "";
-  public signUpUserName: string = "";
-  public password: string = "";
-  public signUpPassword: string = "";
-  public newPassword: string = "";
-  public email: string = "";
-  public code: string = "";
-  public confirmationCode: string = "";
+  public authTitle: string = "GraphQL Chat App"; // Page title
+  public displayMenu: string = "signIn"; // Display form flug
+  public userName: string = ""; // UserName input value
+  public password: string = ""; // Password input value
+  public signUpUserName: string = ""; // SignUp userName input value
+  public signUpPassword: string = ""; // SignUp password input value
+  public code: string = ""; // Confirm code value
+  public email: string = ""; // User email input value
+  public newPassword: string = ""; // Reset password value
+  public confirmationCode: string = ""; // ComfirmationCode value
+  public resetPasswordInput: boolean = false; // Display reset password input
 
   /**
    * 表示する項目を切り替える
@@ -39,8 +37,8 @@ export default class AuthComponent extends Vue {
    */
   public async signIn() {
     try {
-      const user: CognitoUser = await Auth.signIn(this.userName, this.password);
-      VueStore.commit("setUserID", user.getUsername());
+      await Auth.signIn(this.userName, this.password);
+      VueStore.commit("setUserID", this.userName);
       const currentUser: chatUsersType | null = await ChatUsers.getChatUsers();
       console.log(currentUser);
       if (currentUser === null) {
@@ -54,6 +52,9 @@ export default class AuthComponent extends Vue {
     }
   }
 
+  /**
+   * SignUp処理
+   */
   public async signUp() {
     try {
       const params: SignUpParams = {
@@ -72,10 +73,37 @@ export default class AuthComponent extends Vue {
     }
   }
 
+  /**
+   * Confirm SignUp処理
+   */
   public async confirmSignUp() {
     try {
       const result: any = await Auth.confirmSignUp(this.signUpUserName, this.confirmationCode);
       console.log(result);
+      this.changeAuthViews("signIn");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * パスワードリセット用のCode発行
+   */
+  public async sendResetCode() {
+    try {
+      await Auth.forgotPassword(this.userName);
+      this.resetPasswordInput = true;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * パスワードリセット処理
+   */
+  public async resetPassword() {
+    try {
+      await Auth.forgotPasswordSubmit(this.userName, this.code, this.newPassword);
       this.changeAuthViews("signIn");
     } catch (err) {
       console.error(err);

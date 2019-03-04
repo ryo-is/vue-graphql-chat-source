@@ -17,10 +17,10 @@ message_body
 
 @Component({})
 export default class MessageBodyComponent extends Vue {
-  @Prop() public chatMessage: ChatMessagesType;
+  @Prop() public chatMessage: ChatMessagesType; // Chat message value
 
-  public displayControlArea: boolean = false;
-  public editIcon: boolean = true;
+  public displayControlArea: boolean = false; // Display edit / delete icon flug
+  public editIcon: boolean = true; // Display exit edit icon
 
   /**
    * ユーザID判定

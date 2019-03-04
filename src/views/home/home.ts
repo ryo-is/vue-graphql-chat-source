@@ -9,7 +9,7 @@ import AppSyncComponent from "@/components/appSync/AppSync.vue";
   }
 })
 export default class Home extends Vue {
-  public homeTitle: string = "Amplify Vue Demo";
+  public homeTitle: string = "Amplify Vue Demo"; // Page title
 
   public signOut() {
     Auth.signOut().then(() => {

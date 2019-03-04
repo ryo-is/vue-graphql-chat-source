@@ -7,8 +7,8 @@
         .channel-area
           .parent-category Channels
           .child-category.active All Users
-          .child-category Friends
-          .child-category Works
+          //- .child-category Friends
+          //- .child-category Works
         .user-area
           .parent-category Users
           .child-category(v-for="item in chatUsers", :key="item.user_id") {{ item.user_id }}
