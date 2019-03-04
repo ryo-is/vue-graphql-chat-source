@@ -4,11 +4,14 @@
 .create-time {
   color: $basic-dark-color;
   font-weight: bold;
-  padding-left: 20px;
-}
 
-.user-id {
-  padding-right: 20px;
+  &.user-id {
+    padding: 0 20px;
+  }
+
+  &.create-time {
+    padding-left: 1rem;
+  }
 }
 
 .message-body {
