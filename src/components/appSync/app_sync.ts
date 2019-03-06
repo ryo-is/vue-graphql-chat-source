@@ -147,7 +147,7 @@ export default class AppSyncComponent extends Vue {
   private async getMessages() {
     const gqlParams: string = `
       query list {
-        listChatMessages(limit: 50) {
+        listChatMessages(limit: 1000) {
           items {
             ${chatMassageItems}
           }
@@ -156,6 +156,10 @@ export default class AppSyncComponent extends Vue {
     `;
     const result: any = await API.graphql(graphqlOperation(gqlParams));
     const messages: ChatMessagesType[] = result.data.listChatMessages.items;
+    // 取得した配列の最新50件を昇順でsortする
+    if (this.chatMessages.length > 50) {
+      this.chatMessages.length = 50;
+    }
     this.chatMessages = messages.sort((a, b) => {
       return dayjs(a.create_time).unix() - dayjs(b.create_time).unix();
     });
