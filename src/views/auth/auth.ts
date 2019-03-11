@@ -22,6 +22,7 @@ export default class AuthComponent extends Vue {
   public newPassword: string = ""; // Reset password value
   public confirmationCode: string = ""; // ComfirmationCode value
   public resetPasswordInput: boolean = false; // Display reset password input
+  public displayLoadingLayer: boolean = false; // Display loading layer flug
 
   /**
    * 表示する項目を切り替える
@@ -36,6 +37,7 @@ export default class AuthComponent extends Vue {
    * 成功時はUserIDをStoreにCommitし、最終ログイン時間を更新
    */
   public async signIn() {
+    this.displayLoadingLayer = true;
     try {
       await Auth.signIn(this.userName, this.password);
       VueStore.commit("setUserID", this.userName);

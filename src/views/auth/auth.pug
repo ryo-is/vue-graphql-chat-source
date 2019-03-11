@@ -1,6 +1,7 @@
 include ./_mixins
 
 .auth
+  .loading-layer(v-loading="displayLoadingLayer")
   .auth-title {{ authTitle }}
   .auth-content-area
     +_siginInView()

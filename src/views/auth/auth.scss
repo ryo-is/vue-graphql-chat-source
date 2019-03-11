@@ -1,9 +1,25 @@
 @import "../../config/config";
 
 .auth {
+  .loading-layer {
+    height: 100vh;
+    position: absolute;
+    width: 100vw;
+    // z-index: 100;
+
+    .el-loading-mask {
+      background-color: rgba($basic-dark-color, .7);
+
+      .el-loading-spinner .path {
+        stroke: $basic-green-color;
+        stroke-width: 4;
+      }
+    }
+  }
+
   .auth-title {
     font-size: 2rem;
-    margin: 48px 0;
+    line-height: 8rem;
   }
 
   .auto-min-width {
