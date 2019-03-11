@@ -37,13 +37,14 @@ friend_menbers
   }
 })
 export default class AppSyncComponent extends Vue {
-  public appSyncTitle: string = "GraphQL Chat App"; // Page title
-  public chatUsers: ChatUsersType[] = []; // Chat users values
+  public appSyncTitle: string = "Chat Room"; // Page title
+  public chatUsers: string[] = []; // Chat users values
   public chatMessages: ChatMessagesType[] = []; // Chat messages values
-  public displayButton: boolean = true; // Display send / edit button flug
+  public displayInputMessageArea: boolean = false; // Display send message input area flug
   public othersChatMessages: ChatMessagesType[] = []; // Others chat message values
   public myChatMessages: ChatMessagesType[] = []; // My chat message values
-  public putMessage: string = ""; // Put chat message value
+  public displayName: string = ""; // Display name value
+  public messageBody: string = ""; // Put chat message value
   public messageClass: string = "others-message"; // Message class value
   public editMessageTime: string = ""; // Edit message time value
   public subCreateChatMessageClient: any = null; // Create chat message subscription client
@@ -54,16 +55,34 @@ export default class AppSyncComponent extends Vue {
   public subUpdateChatMessageObservable: Observable<object> | null = null; // Update chat message subscription observable
 
   public async created() {
-    await this.createGqlSubscriber();
-    await this.deleteGqlSubscriber();
-    await this.updateGqlSubscriber();
     await this.listChatUser();
-    await this.getMessages();
+    const promises: any[] = [];
+    promises.push(this.createGqlSubscriber());
+    promises.push(this.deleteGqlSubscriber());
+    promises.push(this.updateGqlSubscriber());
+    promises.push(this.getMessages());
+    Promise.all(promises);
   }
 
   public updated() {
     // メッセージが増えるたびに一番下までスクロールする
     document.querySelector("#lastChatMessage").scrollIntoView(false);
+  }
+
+  /**
+   * 送信フォームを表示する
+   */
+  public displayForm() {
+    this.displayInputMessageArea = true;
+    this.displayName = VueStore.state.userID;
+  }
+
+  /**
+   * 自分の表示名を判断する
+   * @param {String} name
+   */
+  public checkMyName(name: string) {
+    return name && name === VueStore.state.userID;
   }
 
   /**
@@ -175,7 +194,7 @@ export default class AppSyncComponent extends Vue {
           input: {
             user_id: "${VueStore.state.userID}",
             create_time: "${dayjs().format("YYYY-MM-DD HH:mm:ss")}",
-            message_body: "${this.putMessage}"
+            message_body: "${this.messageBody}"
           }
         ) {
           ${chatMassageItems}
@@ -183,7 +202,8 @@ export default class AppSyncComponent extends Vue {
       }
     `;
     await API.graphql(graphqlOperation(gqlParams));
-    this.putMessage = "";
+    this.messageBody = "";
+    this.displayInputMessageArea = false;
   }
 
   /**
@@ -191,9 +211,9 @@ export default class AppSyncComponent extends Vue {
    */
   public async updateMessage() {
     const targetMessageComponent: any = this.$refs[this.editMessageTime] as MessageBodyComponent[];
-    await targetMessageComponent[0].editMessage(this.putMessage);
-    this.putMessage = "";
-    this.displayButton = true;
+    await targetMessageComponent[0].editMessage(this.messageBody);
+    this.messageBody = "";
+    this.displayInputMessageArea = false;
   }
 
   /**

@@ -4,14 +4,11 @@
   .content-area
     el-row
       el-col.hidden-sm-and-down(:md="5", :lg="4", :xl="4")
-        .channel-area
-          .parent-category Channels
-          .child-category.active All Users
-          //- .child-category Friends
-          //- .child-category Works
         .user-area
           .parent-category Users
-          .child-category(v-for="item in chatUsers", :key="item.user_id") {{ item.user_id }}
+          ul
+            li.child-category(v-for="user in chatUsers", :key="user.user_id" :class="{active: checkMyName(user.user_id)}") {{ user.user_id }}
+              span(v-if="checkMyName(user.user_id)") ( You )
       el-col(:xs="24", :sm="24", :md="19", :lg="20", :xl="20")
         el-row
           el-col.chat-area(:span="24")
@@ -22,10 +19,16 @@
                 :chatMessage="item"
                 :ref="item.create_time")
               #lastChatMessage
-          el-col.input-mesage-area(:span="24")
-            el-row
-              el-col(:xs="18", :sm="20", :md="20", :lg="21", :xl="18", :offset="1")
-                el-input.input-area(v-model="putMessage")
-              el-col(:xs="5", :sm="3", :md="3", :lg="2", :xl="2")
-                el-button.submit-button(type="primary", v-show="displayButton", @click="createMessage()") Send
-                el-button.submit-button(type="warning", v-show="!displayButton", @click="updateMessage()") Edit
+            font-awesome-icon.display-form-icon(:icon="['far', 'plus-square']", @click="displayForm()")
+    transition(name="el-fade-in-linear")
+      form(v-show="displayInputMessageArea", @submit.prevent="createMessage()")
+        el-row.input-mesage-area()
+          el-col.form-area(:xs="20", :sm="20", :md="16", :lg="13", :xl="11")
+            font-awesome-icon.close-form-icon(:icon="['fas', 'times']", @click="displayInputMessageArea = false")
+            .input-area
+              .tag Display Name
+              .display-name {{ displayName }}
+            .input-area
+              .tag Message
+              el-input(v-model="messageBody")
+            el-button.submit-button(type="primary", native-type="submit") Send

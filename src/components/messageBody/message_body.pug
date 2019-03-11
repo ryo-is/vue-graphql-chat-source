@@ -1,5 +1,7 @@
 .chat-message(:class="checkMessgeClass()")
-  .message-body(@click="changeDisplayControlIconArea()") {{ chatMessage.message_body }}
+  .message-body(@click="changeDisplayControlIconArea()")
+    .msg-text(v-show="displayUpdateInput") {{ chatMessage.message_body }}
+    el-input(v-model="chatMessage.message_body", v-show="!displayUpdateInput", @change="editMessage(chatMessage.message_body)")
   .user-id {{ chatMessage.user_id }}
     span.create-time {{ chatMessage.create_time }}
   transition(name="el-fade-in-linear")
