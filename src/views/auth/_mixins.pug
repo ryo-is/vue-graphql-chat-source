@@ -3,21 +3,35 @@ mixin _siginInView()
     el-row(v-if="displayMenu==='signIn'")
       el-col.sign-in.input-area(:xs="22", :sm="20", :md="16", :lg="14", :xl="12")
         .title Sign In Account
-        form(@submit.prevent="signIn()")
-          .user-name.input
-            .tag UserName*
-            el-input(v-model="userName")
-          .password.input
-            .tag Password*
-            el-input(v-model="password", type="password")
-            .reset-password-msg Forgot your password?
-              span(@click="changeAuthViews('forgotPassword')") Reset Password
-          el-row
-            el-col(:span="12")
-              .signup-msg No account?
-                span(@click="changeAuthViews('signUp')") Create account
-            el-col.signin-button(:span="12")
-              el-button(type="info", native-type="submit") Sign In
+        el-row
+          el-col(:xs="24", :sm="24", :md="24", :lg="14", :xl="12")
+            form(@submit.prevent="signIn()")
+              .user-name.input
+                .tag UserName*
+                el-input(v-model="userName")
+              .password.input
+                .tag Password*
+                el-input(v-model="password", type="password")
+                .reset-password-msg Forgot your password?
+                  span(@click="changeAuthViews('forgotPassword')") Reset Password
+              el-row
+                el-col(:span="14")
+                  .signup-msg No account?
+                    span(@click="changeAuthViews('signUp')") Create account
+                el-col.signin-button(:span="10")
+                  el-button(type="info", native-type="submit") Sign In
+          el-col.provider-signin(:xs="24", :sm="24", :md="24", :lg="10", :xl="12")
+            .sub-title ID Provider Sign In
+            el-col(:span="24")
+              el-button.auth-button(type="info" @click="linkOAuth('Google')")
+                span.logo-before-text Sign In By
+                font-awesome-icon(:icon="['fab', 'google']", @click="editSettingModal()")
+                span.logo-after-text Account
+            el-col(:span="24")
+              el-button.auth-button(type="info" @click="linkOAuth('Facebook')")
+                span.logo-before-text Sign In By
+                font-awesome-icon(:icon="['fab', 'facebook']", @click="editSettingModal()")
+                span.logo-after-text Account
 
 mixin _signUpView()
   transition(name="el-fade-in-linear")

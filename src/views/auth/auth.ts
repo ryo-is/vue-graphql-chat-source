@@ -1,13 +1,13 @@
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import VueStore from "@/store";
 import router from "@/router";
 import { Auth } from "aws-amplify";
 import { SignUpParams } from "@aws-amplify/auth/lib/types/Auth";
 import {
-  CognitoUser,
   ISignUpResult
  } from "amazon-cognito-identity-js";
 import { ChatUsers, chatUsersType } from "./scripts/chat_users";
+import awsExports from "@/aws-exports";
 
 @Component({})
 export default class AuthComponent extends Vue {
@@ -23,6 +23,10 @@ export default class AuthComponent extends Vue {
   public confirmationCode: string = ""; // ComfirmationCode value
   public resetPasswordInput: boolean = false; // Display reset password input
   public displayLoadingLayer: boolean = false; // Display loading layer flug
+
+  public created() {
+    localStorage.setItem("loginStatus", "not login");
+  }
 
   /**
    * 表示する項目を切り替える
@@ -48,6 +52,7 @@ export default class AuthComponent extends Vue {
       } else {
         await ChatUsers.updateChatUser();
       }
+      localStorage.setItem("loginStatus", "logined");
       return router.push("/");
     } catch (err) {
       console.error(err);
@@ -109,6 +114,28 @@ export default class AuthComponent extends Vue {
       await Auth.forgotPasswordSubmit(this.userName, this.code, this.newPassword);
       this.changeAuthViews("signIn");
     } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * 外部プロバイダー認証
+   * @param {String} provider
+   */
+  public linkOAuth(provider: string) {
+    try {
+      this.displayLoadingLayer = true;
+      const targetURL: string =
+      awsExports.oauth.CognitoBaseURL +
+      "/oauth2/authorize?response_type=code&client_id=" +
+      awsExports.oauth.CognitoAppClientID +
+      "&redirect_uri=" +
+      awsExports.oauth.RedirectURI +
+      "&identity_provider=" +
+      provider;
+      window.location.assign(targetURL);
+    } catch (err) {
+      this.displayLoadingLayer = false;
       console.error(err);
     }
   }

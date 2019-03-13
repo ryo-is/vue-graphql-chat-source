@@ -97,6 +97,30 @@
       }
     }
 
+    .provider-signin {
+      margin: auto;
+      padding: 15px 30px;
+
+      .sub-title {
+        font-size: 1.3rem;
+      }
+
+      .auth-button {
+        margin: 16px 0;
+        max-width: 320px;
+        width: 90%;
+
+        .logo-before-text {
+          padding-right: .5rem;
+        }
+
+        .logo-after-text {
+          padding-left: .5rem;
+        }
+      }
+    }
+
+
     .signup-button-area {
       margin-top: 16px;
     }
