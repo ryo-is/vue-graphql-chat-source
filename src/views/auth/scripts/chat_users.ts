@@ -5,15 +5,13 @@ import dayjs from "dayjs";
 export interface chatUsersType {
   user_id: string;
   last_login: string;
-  join_channels: string[];
-  friend_menbers: string[];
+  display_name: string;
 }
 
 const chatUsersItems: string = `
 user_id,
 last_login,
-join_channels,
-friend_menbers
+display_name
 `;
 
 export class ChatUsers {
@@ -51,6 +49,9 @@ export class ChatUsers {
     await API.graphql(graphqlOperation(gqlParams));
   }
 
+  /**
+   * ユーザー情報更新
+   */
   public static async updateChatUser() {
     const gqlParams: string = `
       mutation update {

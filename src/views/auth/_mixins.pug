@@ -23,12 +23,12 @@ mixin _siginInView()
           el-col.provider-signin(:xs="24", :sm="24", :md="24", :lg="10", :xl="12")
             .sub-title ID Provider Sign In
             el-col(:span="24")
-              el-button.auth-button(type="info" @click="linkOAuth('Google')")
+              el-button.auth-button.google-button(type="info" @click="linkOAuth('Google')")
                 span.logo-before-text Sign In By
                 font-awesome-icon(:icon="['fab', 'google']", @click="editSettingModal()")
                 span.logo-after-text Account
             el-col(:span="24")
-              el-button.auth-button(type="info" @click="linkOAuth('Facebook')")
+              el-button.auth-button.facebook-button(type="info" @click="linkOAuth('Facebook')")
                 span.logo-before-text Sign In By
                 font-awesome-icon(:icon="['fab', 'facebook']", @click="editSettingModal()")
                 span.logo-after-text Account

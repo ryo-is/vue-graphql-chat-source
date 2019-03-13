@@ -11,13 +11,6 @@ interface ChatMessagesType {
   message_body: string;
 }
 
-interface ChatUsersType {
-  user_id: string;
-  last_login: string;
-  join_channels: string[];
-  friend_menbers: string[];
-}
-
 const chatMassageItems: string = `
 user_id,
 create_time,
@@ -27,8 +20,7 @@ message_body
 const chatUsersItems: string = `
 user_id,
 last_login,
-join_channels,
-friend_menbers
+display_name
 `;
 
 @Component({

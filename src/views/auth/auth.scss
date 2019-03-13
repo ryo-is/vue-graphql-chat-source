@@ -110,6 +110,16 @@
         max-width: 320px;
         width: 90%;
 
+        &.google-button {
+          background-color: $google-signin-button;
+          border-color: $google-signin-button;
+        }
+
+        &.facebook-button {
+          background-color: $facebook-signin-button;
+          border-color: $facebook-signin-button;
+        }
+
         .logo-before-text {
           padding-right: .5rem;
         }
