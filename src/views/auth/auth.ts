@@ -51,6 +51,7 @@ export default class AuthComponent extends Vue {
       return router.push("/");
     } catch (err) {
       console.error(err);
+      this.displayLoadingLayer = false;
     }
   }
 
