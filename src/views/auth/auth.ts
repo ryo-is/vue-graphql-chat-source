@@ -152,41 +152,55 @@ export default class AuthComponent extends Vue {
    * 外部IDプロバイダ認証時にTokenやユーザ情報を取得する
    * @param {String} code
    */
-  public getTokenAndUserInfo(code: string) {
-    this.displayLoadingLayer = true;
-    const localStorageMainKey: string = "CognitoIdentityServiceProvider." + CognitoAppClientID;
-    const params: URLSearchParams = new URLSearchParams();
-    params.append("grant_type", "authorization_code");
-    params.append("redirect_uri", RedirectURI);
-    params.append("code", code);
-    params.append("client_id", CognitoAppClientID);
+  public async getTokenAndUserInfo(code: string) {
+    try {
+      this.displayLoadingLayer = true;
+      const localStorageMainKey: string = "CognitoIdentityServiceProvider." + CognitoAppClientID;
+      const params: URLSearchParams = new URLSearchParams();
+      params.append("grant_type", "authorization_code");
+      params.append("redirect_uri", RedirectURI);
+      params.append("code", code);
+      params.append("client_id", CognitoAppClientID);
 
-    // Tokenの取得
-    axios.post(CognitoBaseURL + "/oauth2/token", params, {
-      headers : {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
-    }).then((token: any) => {
+      // Tokenの取得
+      const token: any = await axios.post(CognitoBaseURL + "/oauth2/token", params, {
+        headers : {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      });
+
+      // bearerToken生成
       const bearer: string = "Bearer " + token.data.access_token;
-      // ユーザー情報の取得
-      axios.post(CognitoBaseURL + "/oauth2/userInfo", {}, {
+
+      // ユーザ情報の取得
+      const userInfo: any = await axios.post(CognitoBaseURL + "/oauth2/userInfo", {}, {
         headers : {
           "Content-Type": "application/x-www-form-urlencoded",
           "Authorization": bearer
         }
-      }).then((userInfo: any) => {
-        const localStorageSubKey: string = localStorageMainKey + "." + userInfo.data.username;
-        localStorage.setItem(localStorageSubKey + ".accessToken", token.data.access_token);
-        localStorage.setItem(localStorageSubKey + ".idToken", token.data.id_token);
-        localStorage.setItem(localStorageSubKey + ".refreshToken", token.data.refresh_token);
-        localStorage.setItem(localStorageSubKey + ".clockDrift", "0");
-        localStorage.setItem(localStorageMainKey + ".LastAuthUser", userInfo.data.username);
-        localStorage.setItem("loginStatus", "logined");
-        return router.push("/");
       });
-    }).catch((err: any) => {
+
+      const localStorageSubKey: string = localStorageMainKey + "." + userInfo.data.username;
+      localStorage.setItem(localStorageSubKey + ".accessToken", token.data.access_token);
+      localStorage.setItem(localStorageSubKey + ".idToken", token.data.id_token);
+      localStorage.setItem(localStorageSubKey + ".refreshToken", token.data.refresh_token);
+      localStorage.setItem(localStorageSubKey + ".clockDrift", "0");
+      localStorage.setItem(localStorageMainKey + ".LastAuthUser", userInfo.data.username);
+
+      VueStore.commit("setUserID", userInfo.data.username);
+      const currentUser: chatUsersType | null = await ChatUsers.getChatUsers();
+      console.log(currentUser);
+      if (currentUser === null) {
+        await ChatUsers.createChatUser();
+      } else {
+        await ChatUsers.updateChatUser();
+      }
+
+      localStorage.setItem("loginStatus", "logined");
+      return router.push("/");
+    } catch (err) {
       this.displayLoadingLayer = false;
       console.error(err);
-    });
+    }
   }
 }

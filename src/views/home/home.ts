@@ -1,8 +1,8 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Auth } from "aws-amplify";
 import router from "@/router";
+import VueStore from "@/store";
 import AppSyncComponent from "@/components/appSync/AppSync.vue";
-import awsExports from "@/aws-exports";
 
 @Component({
   components: {
@@ -23,6 +23,7 @@ export default class Home extends Vue {
         appSyncComponent.$data.subDeleteChatMessageClient.unsubscribe();
         appSyncComponent.$data.subUpdateChatMessageClient.unsubscribe();
       }
+      VueStore.commit("setUserID", "");
       return router.push("/auth");
     }).catch((err: any) => {
       console.error(err);
