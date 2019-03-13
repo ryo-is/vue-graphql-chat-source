@@ -1,4 +1,5 @@
 import { Component, Vue } from "vue-property-decorator";
+import axios from "axios";
 import VueStore from "@/store";
 import router from "@/router";
 import { Auth } from "aws-amplify";
@@ -8,6 +9,9 @@ import {
  } from "amazon-cognito-identity-js";
 import { ChatUsers, chatUsersType } from "./scripts/chat_users";
 import awsExports from "@/aws-exports";
+const CognitoBaseURL: string = awsExports.oauth.CognitoBaseURL;
+const CognitoAppClientID: string = awsExports.oauth.CognitoAppClientID;
+const RedirectURI: string = awsExports.oauth.RedirectURI;
 
 @Component({})
 export default class AuthComponent extends Vue {
@@ -26,6 +30,10 @@ export default class AuthComponent extends Vue {
 
   public created() {
     localStorage.setItem("loginStatus", "not login");
+    const code: string = this.$route.query.code as string;
+    if (code) {
+      this.getTokenAndUserInfo(code);
+    }
   }
 
   /**
@@ -41,8 +49,8 @@ export default class AuthComponent extends Vue {
    * 成功時はUserIDをStoreにCommitし、最終ログイン時間を更新
    */
   public async signIn() {
-    this.displayLoadingLayer = true;
     try {
+      this.displayLoadingLayer = true;
       await Auth.signIn(this.userName, this.password);
       VueStore.commit("setUserID", this.userName);
       const currentUser: chatUsersType | null = await ChatUsers.getChatUsers();
@@ -126,11 +134,11 @@ export default class AuthComponent extends Vue {
     try {
       this.displayLoadingLayer = true;
       const targetURL: string =
-      awsExports.oauth.CognitoBaseURL +
+      CognitoBaseURL +
       "/oauth2/authorize?response_type=code&client_id=" +
-      awsExports.oauth.CognitoAppClientID +
+      CognitoAppClientID +
       "&redirect_uri=" +
-      awsExports.oauth.RedirectURI +
+      RedirectURI +
       "&identity_provider=" +
       provider;
       window.location.assign(targetURL);
@@ -138,5 +146,47 @@ export default class AuthComponent extends Vue {
       this.displayLoadingLayer = false;
       console.error(err);
     }
+  }
+
+  /**
+   * 外部IDプロバイダ認証時にTokenやユーザ情報を取得する
+   * @param {String} code
+   */
+  public getTokenAndUserInfo(code: string) {
+    this.displayLoadingLayer = true;
+    const localStorageMainKey: string = "CognitoIdentityServiceProvider." + CognitoAppClientID;
+    const params: URLSearchParams = new URLSearchParams();
+    params.append("grant_type", "authorization_code");
+    params.append("redirect_uri", RedirectURI);
+    params.append("code", code);
+    params.append("client_id", CognitoAppClientID);
+
+    // Tokenの取得
+    axios.post(CognitoBaseURL + "/oauth2/token", params, {
+      headers : {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }).then((token: any) => {
+      const bearer: string = "Bearer " + token.data.access_token;
+      // ユーザー情報の取得
+      axios.post(CognitoBaseURL + "/oauth2/userInfo", {}, {
+        headers : {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": bearer
+        }
+      }).then((userInfo: any) => {
+        const localStorageSubKey: string = localStorageMainKey + "." + userInfo.data.username;
+        localStorage.setItem(localStorageSubKey + ".accessToken", token.data.access_token);
+        localStorage.setItem(localStorageSubKey + ".idToken", token.data.id_token);
+        localStorage.setItem(localStorageSubKey + ".refreshToken", token.data.refresh_token);
+        localStorage.setItem(localStorageSubKey + ".clockDrift", "0");
+        localStorage.setItem(localStorageMainKey + ".LastAuthUser", userInfo.data.username);
+        localStorage.setItem("loginStatus", "logined");
+        return router.push("/");
+      });
+    }).catch((err: any) => {
+      this.displayLoadingLayer = false;
+      console.error(err);
+    });
   }
 }
