@@ -12,6 +12,13 @@ import AppSyncComponent from "@/components/appSync/AppSync.vue";
 export default class Home extends Vue {
   public homeTitle: string = "Amplify Vue Demo"; // Page title
 
+  public created() {
+    const loginStatus: string = localStorage.getItem("loginStatus");
+    if (loginStatus === "not login") {
+      return router.push("/auth");
+    }
+  }
+
   /**
    * サインアウト処理
    */
