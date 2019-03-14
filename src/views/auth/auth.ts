@@ -8,7 +8,7 @@ import {
   ISignUpResult
  } from "amazon-cognito-identity-js";
 import { ChatUsers, chatUsersType } from "./scripts/chat_users";
-import awsExports from "@/aws-exports";
+import awsExports from "@/aws-exports.js";
 const CognitoBaseURL: string = awsExports.oauth.CognitoBaseURL;
 const CognitoAppClientID: string = awsExports.oauth.CognitoAppClientID;
 const RedirectURI: string = awsExports.oauth.RedirectURI;
@@ -207,6 +207,9 @@ export default class AuthComponent extends Vue {
     }
   }
 
+  /**
+   * 初回ログイン時のユーザー作成
+   */
   public async createUser() {
     try {
       VueStore.commit("setDisplayName", this.displayName);

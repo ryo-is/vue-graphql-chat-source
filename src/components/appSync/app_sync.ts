@@ -29,7 +29,7 @@ display_name
   }
 })
 export default class AppSyncComponent extends Vue {
-  public appSyncTitle: string = "Chat Room"; // Page title
+  public appSyncTitle: string = "All User Chat Room"; // Page title
   public chatUsers: string[] = []; // Chat users values
   public chatMessages: ChatMessagesType[] = []; // Chat messages values
   public displayInputMessageArea: boolean = false; // Display send message input area flug
