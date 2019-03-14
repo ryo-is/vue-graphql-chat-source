@@ -18,6 +18,7 @@ export default class AuthComponent extends Vue {
   public authTitle: string = "GraphQL Chat App"; // Page title
   public displayMenu: string = "signIn"; // Display form flug
   public userName: string = ""; // UserName input value
+  public displayName: string = ""; // DisplayName input value
   public password: string = ""; // Password input value
   public signUpUserName: string = ""; // SignUp userName input value
   public signUpPassword: string = ""; // SignUp password input value
@@ -27,6 +28,7 @@ export default class AuthComponent extends Vue {
   public confirmationCode: string = ""; // ComfirmationCode value
   public resetPasswordInput: boolean = false; // Display reset password input
   public displayLoadingLayer: boolean = false; // Display loading layer flug
+  public registerDisplayNameForm: boolean = false; // Register display name form flug
 
   public created() {
     localStorage.setItem("loginStatus", "not login");
@@ -56,12 +58,13 @@ export default class AuthComponent extends Vue {
       const currentUser: chatUsersType | null = await ChatUsers.getChatUsers();
       console.log(currentUser);
       if (currentUser === null) {
-        await ChatUsers.createChatUser();
+        this.registerDisplayNameForm = true;
       } else {
-        await ChatUsers.updateChatUser();
+        const user: chatUsersType = await ChatUsers.updateChatUser();
+        VueStore.commit("setDisplayName", user.display_name);
+        localStorage.setItem("loginStatus", "logined");
+        return router.push("/");
       }
-      localStorage.setItem("loginStatus", "logined");
-      return router.push("/");
     } catch (err) {
       console.error(err);
       this.displayLoadingLayer = false;
@@ -191,11 +194,23 @@ export default class AuthComponent extends Vue {
       const currentUser: chatUsersType | null = await ChatUsers.getChatUsers();
       console.log(currentUser);
       if (currentUser === null) {
-        await ChatUsers.createChatUser();
+        this.registerDisplayNameForm = true;
       } else {
-        await ChatUsers.updateChatUser();
+        const user: chatUsersType = await ChatUsers.updateChatUser();
+        VueStore.commit("setDisplayName", user.display_name);
+        localStorage.setItem("loginStatus", "logined");
+        return router.push("/");
       }
+    } catch (err) {
+      this.displayLoadingLayer = false;
+      console.error(err);
+    }
+  }
 
+  public async createUser() {
+    try {
+      VueStore.commit("setDisplayName", this.displayName);
+      await ChatUsers.createChatUser();
       localStorage.setItem("loginStatus", "logined");
       return router.push("/");
     } catch (err) {

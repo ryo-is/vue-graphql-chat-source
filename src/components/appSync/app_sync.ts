@@ -66,7 +66,7 @@ export default class AppSyncComponent extends Vue {
    */
   public displayForm() {
     this.displayInputMessageArea = true;
-    this.displayName = VueStore.state.userID;
+    this.displayName = VueStore.state.displayName;
   }
 
   /**
@@ -184,7 +184,7 @@ export default class AppSyncComponent extends Vue {
       mutation put {
         createChatMessage(
           input: {
-            user_id: "${VueStore.state.userID}",
+            user_id: "${VueStore.state.displayName}",
             create_time: "${dayjs().format("YYYY-MM-DD HH:mm:ss")}",
             message_body: "${this.messageBody}"
           }

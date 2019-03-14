@@ -39,6 +39,7 @@ export class ChatUsers {
         createChatUsers(
           input: {
             user_id: "${VueStore.state.userID}",
+            display_name: "${VueStore.state.displayName}"
             last_login: "${dayjs().format("YYYY/MM/DD HH:mm:ss")}"
           }
         ) {
@@ -65,6 +66,7 @@ export class ChatUsers {
         }
       }
     `;
-    await API.graphql(graphqlOperation(gqlParams));
+    const result: any = await API.graphql(graphqlOperation(gqlParams));
+    return result.data.updateChatUsers;
   }
 }

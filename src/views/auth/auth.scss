@@ -135,4 +135,50 @@
       margin-top: 16px;
     }
   }
+
+  .register-display-name {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    z-index: 2000;
+
+    .form-area {
+      background-color: $basic-light-color;
+      border-radius: 12px;
+      color: $basic-dark-color;
+      padding: 24px;
+
+      .title {
+        border-bottom: 3px solid $basic-green-color;
+        font-size: 1.5rem;
+        line-height: 2.5rem;
+        margin-bottom: 12px;
+      }
+
+      .input {
+        padding: 0 36px;
+
+        .tag {
+          font-size: 1.3rem;
+          line-height: 2.5rem;
+          padding-left: 1rem;
+          text-align: left;
+        }
+
+        .el-input {
+          font-size: 1.2rem;
+        }
+      }
+
+      .submit-button {
+        margin-top: 16px;
+        padding: 13px 36px;
+      }
+    }
+  }
 }

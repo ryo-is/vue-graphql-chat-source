@@ -7,7 +7,7 @@
         .user-area
           .parent-category Users
           ul
-            li.child-category(v-for="user in chatUsers", :key="user.user_id" :class="{active: checkMyName(user.user_id)}") {{ user.user_id }}
+            li.child-category(v-for="user in chatUsers", :key="user.user_id" :class="{active: checkMyName(user.user_id)}") {{ user.display_name }}
               span(v-if="checkMyName(user.user_id)") ( You )
       el-col(:xs="24", :sm="24", :md="19", :lg="20", :xl="20")
         el-row

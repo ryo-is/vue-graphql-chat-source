@@ -13,6 +13,9 @@ export default new Vuex.Store({
     },
     setUserID(state, id) {
       state.userID = id;
+    },
+    setDisplayName(state, name) {
+      state.displayName = name;
     }
   },
   plugins: [createPersistedState()],

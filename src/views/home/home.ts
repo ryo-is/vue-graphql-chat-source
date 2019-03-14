@@ -14,7 +14,7 @@ export default class Home extends Vue {
 
   public created() {
     const loginStatus: string = localStorage.getItem("loginStatus");
-    if (loginStatus === "not login") {
+    if (loginStatus !== "logined") {
       return router.push("/auth");
     }
   }

@@ -8,3 +8,11 @@ include ./_mixins
     +_signUpView()
     +_confirmSignUpView()
     +_forgotPasswordView()
+  .register-display-name(v-show="registerDisplayNameForm")
+    el-col.form-area(:xs="18", :sm="16", :md="12", :lg="10", :xl="8")
+      .title Register Display Name
+      form(@submit.prevent="createUser()")
+        .display-name.input
+          .tag DisplayName*
+          el-input(v-model="displayName")
+        el-button.submit-button(type="info" native-type="submit") Submit

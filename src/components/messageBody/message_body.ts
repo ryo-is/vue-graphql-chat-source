@@ -27,7 +27,7 @@ export default class MessageBodyComponent extends Vue {
    * ユーザID判定
    */
   public checkUserID() {
-    return this.chatMessage.user_id === VueStore.state.userID;
+    return this.chatMessage.user_id === VueStore.state.displayName;
   }
 
   /**
