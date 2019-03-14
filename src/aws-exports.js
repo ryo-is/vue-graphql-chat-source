@@ -12,9 +12,14 @@ const awsmobile =  {
   "oauth": {
     "CognitoBaseURL": "https://vue-signin-oauth.auth.ap-northeast-1.amazoncognito.com",
     "CognitoAppClientID": "7aij1o8k4k9hkil4me8d6h311c",
-    "RedirectURI": "http://localhost:8080/auth",
+    // "RedirectURI": "http://localhost:8080/auth",
+    "RedirectURI": "https://chat.isryo.work/auth",
   },
 };
+
+if (process.env.NODE_ENV === "development") {
+  awsmobile.oauth.RedirectURI = "http://localhost:8080/auth";
+}
 
 
 export default awsmobile;
