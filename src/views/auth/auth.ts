@@ -56,7 +56,6 @@ export default class AuthComponent extends Vue {
       await Auth.signIn(this.userName, this.password);
       VueStore.commit("setUserID", this.userName);
       const currentUser: chatUsersType | null = await ChatUsers.getChatUsers();
-      console.log(currentUser);
       if (currentUser === null) {
         this.registerDisplayNameForm = true;
       } else {
