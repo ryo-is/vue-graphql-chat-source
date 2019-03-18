@@ -2,11 +2,11 @@
 
 .user-id,
 .create-time {
-  color: $basic-dark-color;
+  color: $basic-light-color;
   font-weight: bold;
 
   &.user-id {
-    padding: 0 20px;
+    padding: 0 28px;
   }
 
   &.create-time {
@@ -18,10 +18,10 @@
   border-radius: 8px;
   display: inline-block;
   font-weight: bold;
-  line-height: 28px;
-  margin: 5px 10px;
+  line-height: 24px;
+  margin: 5px 20px;
   max-width: 70%;
-  padding: 9px 18px;
+  padding: 8px 16px;
   position: relative;
   text-align: left;
 }
@@ -31,8 +31,8 @@
   width: 100%;
 
   .message-body {
-    background-color: $basic-dark-color;
-    color: $basic-light-color;
+    background-color: $chat-area-background-color;
+    color: $basic-dark-color;
   }
 }
 
@@ -52,7 +52,7 @@
 }
 
 .message-control-area {
-  color: $basic-dark-color;
+  color: $basic-green-color;
   font-size: 28px;
   font-weight: bold;
   padding: 0 20px;
