@@ -3,7 +3,7 @@
     el-row
       el-col.hidden-sm-and-down(:md="5", :lg="4", :xl="4")
         .user-area
-          .parent-category Users
+          .parent-category Chat Users
           ul
             li.child-category(v-for="user in chatUsers", :key="user.user_id" :class="{active: checkMyName(user.user_id)}") {{ user.display_name }}
               span(v-if="checkMyName(user.user_id)") ( You )
