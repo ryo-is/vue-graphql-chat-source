@@ -1,2 +1,3 @@
 .app
-  router-view
+  HeaderComponent(v-if="displayHeaderComponent()")
+  router-view(:ref="createRef()")

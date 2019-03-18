@@ -4,14 +4,6 @@
 .app-sync {
   margin: auto;
 
-  .app-sync-title {
-    background-color: $basic-green-color;
-    font-size: 2rem;
-    font-weight: bold;
-    line-height: 4rem;
-    text-shadow: 1px 1px 1px $chat-title-shadow-color;
-  }
-
   .content-area {
     height: calc(100vh - 4rem);
     position: relative;

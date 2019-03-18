@@ -22,18 +22,18 @@ export default class Home extends Vue {
   /**
    * サインアウト処理
    */
-  public signOut() {
-    Auth.signOut().then(() => {
-      const appSyncComponent: AppSyncComponent = this.$refs.appSync as AppSyncComponent;
-      if (appSyncComponent.$data.subCreateChatMessageClient !== null) {
-        appSyncComponent.$data.subCreateChatMessageClient.unsubscribe();
-        appSyncComponent.$data.subDeleteChatMessageClient.unsubscribe();
-        appSyncComponent.$data.subUpdateChatMessageClient.unsubscribe();
-      }
-      VueStore.commit("setUserID", "");
-      return router.push("/auth");
-    }).catch((err: any) => {
-      console.error(err);
-    });
-  }
+  // public signOut() {
+  //   Auth.signOut().then(() => {
+  //     const appSyncComponent: AppSyncComponent = this.$refs.appSync as AppSyncComponent;
+  //     if (appSyncComponent.$data.subCreateChatMessageClient !== null) {
+  //       appSyncComponent.$data.subCreateChatMessageClient.unsubscribe();
+  //       appSyncComponent.$data.subDeleteChatMessageClient.unsubscribe();
+  //       appSyncComponent.$data.subUpdateChatMessageClient.unsubscribe();
+  //     }
+  //     VueStore.commit("setUserID", "");
+  //     return router.push("/auth");
+  //   }).catch((err: any) => {
+  //     console.error(err);
+  //   });
+  // }
 }
