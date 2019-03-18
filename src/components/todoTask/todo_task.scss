@@ -3,6 +3,15 @@
 .todo-task {
   background-color: $todo-task-coclor;
   border-radius: 5px;
+  box-sizing: border-box;
+  color: $basic-dark-color;
   height: 20%;
   margin-bottom: 10px;
+  padding: 5px;
+
+  .task-title {
+    font-size: 1.15rem;
+    padding-left: 1rem;
+    text-align: left;
+  }
 }

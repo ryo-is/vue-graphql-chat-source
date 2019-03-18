@@ -12,11 +12,6 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "todo",
-      component: Todo
-    },
-    {
-      path: "/home",
       name: "home",
       component: Home
     },
