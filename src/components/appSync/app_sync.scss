@@ -46,14 +46,15 @@
     }
 
     .chat-area {
-      background-color: $chat-area-background-color;
+      // background-color: $chat-area-background-color;
+      border-left: 2px solid $basic-green-color;
       box-sizing: border-box;
-      height: calc(100vh - 4rem);
+      height: calc(100vh - 3rem);
       overflow-y: hidden;
       position: relative;
 
       .chat-message-area {
-        height: calc(100vh - 4rem - 56px);
+        height: calc(100vh - 3rem - 56px);
         overflow-y: scroll;
 
         &::-webkit-scrollbar {
@@ -88,6 +89,7 @@
 
       .form-area {
         background-color: $basic-dark-color;
+        border: 1px solid $basic-light-color;
         border-radius: 10px;
         height: 320px;
         padding: 20px 0;
