@@ -12,10 +12,6 @@ export default class App extends Vue {
   }
 
   public createRef() {
-    if (this.$route.path === "/") {
-      return "home";
-    } else {
-      return "";
-    }
+    return this.$route.name;
   }
 }

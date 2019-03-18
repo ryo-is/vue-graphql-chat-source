@@ -16,7 +16,7 @@ export default new Router({
     },
     {
       path: "/auth",
-      name: "Auth",
+      name: "auth",
       component: Auth
     }
   ],
