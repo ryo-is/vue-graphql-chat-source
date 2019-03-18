@@ -1,0 +1,8 @@
+@import "../../config/config";
+
+.todo-task {
+  background-color: $todo-task-coclor;
+  border-radius: 5px;
+  height: 20%;
+  margin-bottom: 10px;
+}

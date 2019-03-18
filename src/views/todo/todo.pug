@@ -1,0 +1,13 @@
+.todo
+  el-row
+    el-col.task-status(
+      :xs="24", :sm="12", :md="8", :lg="6", :xl="4",
+      v-for="status in taskStatuses", :key="status")
+      .title {{ status }}
+      .task-content-area
+        TodoTaskComponent
+        TodoTaskComponent
+        TodoTaskComponent
+        TodoTaskComponent
+        TodoTaskComponent
+        TodoTaskComponent
