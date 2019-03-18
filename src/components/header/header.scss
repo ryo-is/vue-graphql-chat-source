@@ -5,14 +5,14 @@
   background-color: $basic-green-color;
   font-size: 2rem;
   font-weight: bold;
-  height: 4rem;
+  height: 3rem;
   text-shadow: 1px 1px 1px $chat-title-shadow-color;
 
   .sign-out {
     cursor: pointer;
-    font-size: 2.5rem;
+    font-size: 2rem;
     position: absolute;
     right: 15px;
-    top: 12px;
+    top: 7px;
   }
 }
