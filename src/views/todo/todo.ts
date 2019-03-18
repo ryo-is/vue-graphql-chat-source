@@ -20,6 +20,7 @@ export default class TodoComponent extends Vue {
     scrollSpeed: 30,
   };
 
+  // Lambdaかkクライアント側で生成する必要がある
   public todoTasks: {[key: string]: TodoTaskType[]} = {
     TODO: [
       {
