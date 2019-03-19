@@ -2,12 +2,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import VueStore from "@/store";
 import { API, graphqlOperation } from "aws-amplify";
 import AppSyncComponent from "../appSync/AppSync.vue";
-
-interface ChatMessagesType {
-  user_id: string;
-  create_time: string;
-  message_body: string;
-}
+import { ChatMessagesType } from "@/interfaces";
 
 const chatMassageType: string = `
 user_id,

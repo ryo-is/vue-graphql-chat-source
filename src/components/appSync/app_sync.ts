@@ -4,12 +4,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import Observable from "zen-observable";
 import dayjs from "dayjs";
 import MessageBodyComponent from "../messageBody/MessageBody.vue";
-
-interface ChatMessagesType {
-  user_id: string;
-  create_time: string;
-  message_body: string;
-}
+import { ChatMessagesType } from "@/interfaces";
 
 const chatMassageItems: string = `
 user_id,

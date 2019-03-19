@@ -1,0 +1,34 @@
+@import "../../config/config";
+
+.todo {
+  .task-status {
+    height: calc(100vh - 3rem);
+    padding: 20px 15px;
+
+    .title {
+      border-bottom: 2px solid $basic-green-color;
+      font-size: 1.4rem;
+      margin: 0 10px;
+      padding: 5px 1rem;;
+      text-align: left;
+    }
+
+    .task-content-area {
+      background-color: $task-content-area-color;
+      border-radius: 5px;
+      height: calc(100vh - 3rem - 130px);
+      margin: 24px 10px 0;
+      padding: 10px;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #cecece;
+        border-radius: 3px;
+      }
+    }
+  }
+}
