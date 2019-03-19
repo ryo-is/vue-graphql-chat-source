@@ -6,4 +6,5 @@ export interface ChatMessagesType {
 
 export interface TodoTaskType {
   title: string;
+  status: string;
 }

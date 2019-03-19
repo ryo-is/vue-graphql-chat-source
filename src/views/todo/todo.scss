@@ -1,7 +1,7 @@
 @import "../../config/config";
 
 .todo {
-  .task-status {
+  .task-status-list {
     height: calc(100vh - 3rem);
     padding: 20px 15px;
 
@@ -19,6 +19,7 @@
       height: calc(100vh - 3rem - 130px);
       margin: 24px 10px 0;
       padding: 10px;
+      position: relative;
       overflow-y: scroll;
 
       &::-webkit-scrollbar {
@@ -28,6 +29,15 @@
       &::-webkit-scrollbar-thumb {
         background: #cecece;
         border-radius: 3px;
+      }
+
+      .create-task-icon {
+        bottom: 10px;
+        color: $basic-green-color;
+        cursor: pointer;
+        font-size: 2.5rem;
+        position: absolute;
+        right: 10px;
       }
     }
   }
