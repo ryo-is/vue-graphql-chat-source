@@ -2,16 +2,14 @@ import { API, graphqlOperation } from "aws-amplify";
 import VueStore from "@/store";
 import dayjs from "dayjs";
 
-export interface chatUsersType {
-  user_id: string;
-  last_login: string;
-  display_name: string;
-}
-
 const chatUsersItems: string = `
 user_id,
 last_login,
-display_name
+display_name,
+todo_task_ids,
+doing_task_ids,
+check_task_ids,
+done_task_ids,
 `;
 
 export class ChatUsers {
@@ -26,6 +24,7 @@ export class ChatUsers {
         }
       }
     `;
+    console.log(gqlParams);
     const result: any = await API.graphql(graphqlOperation(gqlParams));
     return result.data.getChatUsers;
   }
