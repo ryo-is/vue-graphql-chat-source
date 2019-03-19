@@ -21,6 +21,7 @@
     "dayjs": "^1.8.10",
     "element-ui": "^2.6.1",
     "register-service-worker": "^1.6.2",
+    "uuid": "^3.3.2",
     "vue": "^2.6.9",
     "vue-class-component": "^7.0.1",
     "vue-property-decorator": "^8.0.0",

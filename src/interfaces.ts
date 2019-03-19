@@ -5,5 +5,9 @@ export interface ChatMessagesType {
 }
 
 export interface TodoTaskType {
+  user_id: string;
+  task_id: string;
   title: string;
+  status: string;
+  priority: number;
 }
