@@ -5,6 +5,6 @@
       v-for="items, index in todoTasks", :key="index")
       .title {{ index }}
       draggable.task-content-area(
-        :options="options", :list="items"
+        :options="options", :list="items",
         @end="dragEnd()")
         TodoTaskComponent(v-for="item in items", :key="item.title", :todoTaskItem="item")
