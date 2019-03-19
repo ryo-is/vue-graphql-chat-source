@@ -41,6 +41,7 @@ export default class TodoComponent extends Vue {
 
   // Lambdaかクライアント側で生成する必要がある
   public todoTaskIDs: string[] = [];
+  public todoTaskStatuses: string[] = ["TODO", "Doing", "Check", "Done"];
   public todoTasks: {[key: string]: TodoTaskType[]} = {
     TODO: [],
     Doing: [],
@@ -155,7 +156,31 @@ export default class TodoComponent extends Vue {
     const tasks: TodoTaskType[] = result.data.queryTodoTasks.items;
     // 取得したTasksを各Statusにpush
     for (const task of tasks) {
-      this.todoTasks[task.status].push(task);
+      if (task.status === "TODO") {
+        for (const id of VueStore.state.todo_task_ids) {
+          if (id === task.task_id) {
+            this.todoTasks.TODO.push(task);
+          }
+        }
+      } else if (task.status === "Doing") {
+        for (const id of VueStore.state.doing_task_ids) {
+          if (id === task.task_id) {
+            this.todoTasks.Doing.push(task);
+          }
+        }
+      } else if (task.status === "Check") {
+        for (const id of VueStore.state.check_task_ids) {
+          if (id === task.task_id) {
+            this.todoTasks.Check.push(task);
+          }
+        }
+      } else {
+        for (const id of VueStore.state.done_task_ids) {
+          if (id === task.task_id) {
+            this.todoTasks.Done.push(task);
+          }
+        }
+      }
     }
   }
 
