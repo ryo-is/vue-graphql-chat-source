@@ -9,5 +9,14 @@ export interface TodoTaskType {
   task_id: string;
   title: string;
   status: string;
-  priority: number;
+}
+
+export interface ChatUsersType {
+  user_id: string;
+  last_login: string;
+  display_name: string;
+  todo_task_ids: string[];
+  doing_task_ids: string[];
+  check_task_ids: string[];
+  done_task_ids: string[];
 }

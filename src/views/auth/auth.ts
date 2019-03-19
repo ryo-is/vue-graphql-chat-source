@@ -7,7 +7,8 @@ import { SignUpParams } from "@aws-amplify/auth/lib/types/Auth";
 import {
   ISignUpResult
  } from "amazon-cognito-identity-js";
-import { ChatUsers, chatUsersType } from "./scripts/chat_users";
+import { ChatUsers } from "./scripts/chat_users";
+import { ChatUsersType } from "@/interfaces";
 import awsExports from "@/aws-exports.js";
 const CognitoBaseURL: string = awsExports.oauth.CognitoBaseURL;
 const CognitoAppClientID: string = awsExports.oauth.CognitoAppClientID;
@@ -55,12 +56,13 @@ export default class AuthComponent extends Vue {
       this.displayLoadingLayer = true;
       await Auth.signIn(this.userName, this.password);
       VueStore.commit("setUserID", this.userName);
-      const currentUser: chatUsersType | null = await ChatUsers.getChatUsers();
+      const currentUser: ChatUsersType | null = await ChatUsers.getChatUsers();
       if (currentUser === null) {
         this.registerDisplayNameForm = true;
       } else {
-        const user: chatUsersType = await ChatUsers.updateChatUser();
+        const user: ChatUsersType = await ChatUsers.updateChatUser();
         VueStore.commit("setDisplayName", user.display_name);
+        VueStore.commit("setTaskIds", user);
         localStorage.setItem("loginStatus", "logined");
         return router.push("/");
       }
@@ -190,13 +192,14 @@ export default class AuthComponent extends Vue {
       localStorage.setItem(localStorageMainKey + ".LastAuthUser", userInfo.data.username);
 
       VueStore.commit("setUserID", userInfo.data.username);
-      const currentUser: chatUsersType | null = await ChatUsers.getChatUsers();
+      const currentUser: ChatUsersType | null = await ChatUsers.getChatUsers();
       console.log(currentUser);
       if (currentUser === null) {
         this.registerDisplayNameForm = true;
       } else {
-        const user: chatUsersType = await ChatUsers.updateChatUser();
+        const user: ChatUsersType = await ChatUsers.updateChatUser();
         VueStore.commit("setDisplayName", user.display_name);
+        VueStore.commit("setTaskIds", user);
         localStorage.setItem("loginStatus", "logined");
         return router.push("/");
       }
