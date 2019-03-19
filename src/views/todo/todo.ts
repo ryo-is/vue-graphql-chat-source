@@ -11,6 +11,7 @@ user_id
 task_id
 title
 status
+priority
 `;
 
 @Component({
@@ -31,55 +32,15 @@ export default class TodoComponent extends Vue {
 
   // Lambdaかクライアント側で生成する必要がある
   public todoTasks: {[key: string]: TodoTaskType[]} = {
-    TODO: [
-      {
-        title: "TODO Task 1",
-        status: "TODO"
-      },
-      {
-        title: "TODO Task 2",
-        status: "TODO"
-      },
-      {
-        title: "TODO Task 3",
-        status: "TODO"
-      }
-    ],
-    Doing: [
-      {
-        title: "Doing Task 1",
-        status: "Doing"
-      }
-    ],
-    Check: [
-      {
-        title: "Check Task 1",
-        status: "Check"
-      },
-      {
-        title: "Check Task 2",
-        status: "Check"
-      }
-    ],
-    Done: [
-      {
-        title: "Done Task 1",
-        status: "Done"
-      },
-      {
-        title: "Done Task 2",
-        status: "Done"
-      },
-      {
-        title: "Done Task 3",
-        status: "Done"
-      },
-      {
-        title: "Done Task 4",
-        status: "Done"
-      }
-    ]
+    TODO: [],
+    Doing: [],
+    Check: [],
+    Done: []
   };
+
+  public created() {
+    this.queryTasks();
+  }
 
   /**
    * ドラッグ開始時の処理
@@ -109,19 +70,43 @@ export default class TodoComponent extends Vue {
               user_id: "${VueStore.state.displayName}",
               task_id: "${uuidv4()}",
               title: "New Task",
-              status: "${taskStatus}"
+              status: "${taskStatus}",
+              priority: ${this.todoTasks[taskStatus].length + 1}
             }
           ) {
             ${todoTaskItems}
           }
         }
       `;
-      console.log(gqlParams);
       const result: any = await API.graphql(graphqlOperation(gqlParams));
       console.log(result);
       this.todoTasks[taskStatus].push(result.data.createTodoTask);
     } catch (err) {
       console.error(err);
     }
+  }
+
+  public async queryTasks() {
+    const gqlParams: string = `
+      query queryTasks {
+        queryTodoTasks(user_id: "${VueStore.state.displayName}") {
+          items {
+            ${todoTaskItems}
+          }
+        }
+      }
+    `;
+    const result: any = await API.graphql(graphqlOperation(gqlParams));
+    const tasks: TodoTaskType[] = result.data.queryTodoTasks.items;
+    // 取得したTasksを各Statusにpush
+    for (const task of tasks) {
+      this.todoTasks[task.status].push(task);
+    }
+    // priorityでsort(昇順)
+    Object.keys(this.todoTasks).forEach((key: string) => {
+      this.todoTasks[key] = this.todoTasks[key].sort((a, b) => {
+        return a.priority - b.priority;
+      });
+    });
   }
 }

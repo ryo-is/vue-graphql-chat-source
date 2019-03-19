@@ -7,5 +7,5 @@
       draggable.task-content-area(
         :options="options", :list="items",
         @start="dragStart()", @end="dragEnd()")
-        TodoTaskComponent(v-for="item in items", :key="item.title", :todoTaskItem="item")
+        TodoTaskComponent(v-for="item in items", :key="item.task_id", :todoTaskItem="item")
         font-awesome-icon.create-task-icon(:icon="['far', 'plus-square']", @click="createTask(index)")
