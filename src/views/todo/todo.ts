@@ -156,30 +156,39 @@ export default class TodoComponent extends Vue {
     const tasks: TodoTaskType[] = result.data.queryTodoTasks.items;
     // 取得したTasksを各Statusにpush
     for (const task of tasks) {
-      if (task.status === "TODO") {
-        for (const id of VueStore.state.todo_task_ids) {
-          if (id === task.task_id) {
-            this.todoTasks.TODO.push(task);
+      switch (task.status) {
+        case "TODO":
+          for (const id of VueStore.state.todo_task_ids) {
+            if (id === task.task_id) {
+              this.todoTasks.TODO.push(task);
+              break;
+            }
           }
-        }
-      } else if (task.status === "Doing") {
-        for (const id of VueStore.state.doing_task_ids) {
-          if (id === task.task_id) {
-            this.todoTasks.Doing.push(task);
+          break;
+        case "Doing":
+          for (const id of VueStore.state.doing_task_ids) {
+            if (id === task.task_id) {
+              this.todoTasks.Doing.push(task);
+              break;
+            }
           }
-        }
-      } else if (task.status === "Check") {
-        for (const id of VueStore.state.check_task_ids) {
-          if (id === task.task_id) {
-            this.todoTasks.Check.push(task);
+          break;
+        case "Check":
+          for (const id of VueStore.state.check_task_ids) {
+            if (id === task.task_id) {
+              this.todoTasks.Check.push(task);
+              break;
+            }
           }
-        }
-      } else {
-        for (const id of VueStore.state.done_task_ids) {
-          if (id === task.task_id) {
-            this.todoTasks.Done.push(task);
+          break;
+        default:
+          for (const id of VueStore.state.done_task_ids) {
+            if (id === task.task_id) {
+              this.todoTasks.Done.push(task);
+              break;
+            }
           }
-        }
+          break;
       }
     }
   }
