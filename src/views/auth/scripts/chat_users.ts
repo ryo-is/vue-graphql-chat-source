@@ -17,16 +17,19 @@ export class ChatUsers {
    * ユーザー取得
    */
   public static async getChatUsers() {
-    const gqlParams: string = `
-      query getUsers {
-        getChatUsers(user_id: "${VueStore.state.userID}") {
-          ${chatUsersItems}
+    try {
+      const gqlParams: string = `
+        query getUsers {
+          getChatUsers(user_id: "${VueStore.state.userID}") {
+            ${chatUsersItems}
+          }
         }
-      }
-    `;
-    console.log(gqlParams);
-    const result: any = await API.graphql(graphqlOperation(gqlParams));
-    return result.data.getChatUsers;
+      `;
+      const result: any = await API.graphql(graphqlOperation(gqlParams));
+      return result.data.getChatUsers;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /**
