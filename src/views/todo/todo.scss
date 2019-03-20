@@ -16,13 +16,13 @@
     .task-content-area {
       background-color: $task-content-area-color;
       border-radius: 5px;
-      height: calc(100vh - 3rem - 130px);
+      height: calc(100vh - 3rem - 110px);
       margin: 24px 10px 0;
-      padding: 10px;
       position: relative;
 
       .task-group {
-        height: calc(100% - 50px);
+        height: calc(100% - 70px);
+        padding: 10px;
         position: relative;
         overflow-y: scroll;
 
@@ -36,13 +36,20 @@
         }
       }
 
-      .create-task-icon {
-        bottom: 10px;
-        color: $basic-green-color;
-        cursor: pointer;
-        font-size: 2.5rem;
-        position: absolute;
-        right: 10px;
+      .task-group-footer {
+        background-color: $basic-green-color;
+        border-radius: 0 0 5px 5px;
+        height: 50px;
+        position: relative;
+
+        .create-task-icon {
+          bottom: 5px;
+          color: $color-white;
+          cursor: pointer;
+          font-size: 2.5rem;
+          position: absolute;
+          right: 10px;
+        }
       }
     }
   }
