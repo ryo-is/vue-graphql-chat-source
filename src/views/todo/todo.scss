@@ -20,20 +20,20 @@
       margin: 24px 10px 0;
       padding: 10px;
       position: relative;
-      overflow-y: scroll;
-
-      &::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: #cecece;
-        border-radius: 3px;
-      }
 
       .task-group {
-        height: calc(100vh - 3rem - 130px);
+        height: calc(100% - 50px);
         position: relative;
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #cecece;
+          border-radius: 3px;
+        }
       }
 
       .create-task-icon {
