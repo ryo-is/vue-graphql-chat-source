@@ -31,6 +31,11 @@
         border-radius: 3px;
       }
 
+      .task-group {
+        height: calc(100vh - 3rem - 130px);
+        position: relative;
+      }
+
       .create-task-icon {
         bottom: 10px;
         color: $basic-green-color;

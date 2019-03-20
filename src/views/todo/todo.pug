@@ -4,8 +4,9 @@
       :xs="24", :sm="12", :md="8", :lg="6", :xl="4",
       v-for="items, index in todoTasks", :key="index")
       .title {{ index }}
-      draggable.task-content-area(
-        :options="options", :list="items",
-        @start="dragStart()", @end="dragEnd()")
-        TodoTaskComponent(v-for="item in items", :key="item.task_id", :todoTaskItem="item")
+      .task-content-area
+        draggable.task-group(
+          :options="options", :list="items", group="todo-tasks",
+          @start="dragStart()", @end="dragEnd()")
+          TodoTaskComponent(v-for="item in items", :key="item.task_id", :todoTaskItem="item")
         font-awesome-icon.create-task-icon(:icon="['far', 'plus-square']", @click="createTask(index)")

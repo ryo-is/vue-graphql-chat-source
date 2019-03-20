@@ -32,9 +32,7 @@ done_task_ids
 export default class TodoComponent extends Vue {
   public options: any = {
     animation: 200,
-    draggable: ".todo-task",
     handle: ".todo-task",
-    group: "task",
     scrollSensitivity: 200,
     scrollSpeed: 30,
   };
