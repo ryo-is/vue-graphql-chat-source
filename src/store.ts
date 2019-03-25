@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import initialState from "./initial_state";
+import { ChatUsersType } from "@/interfaces";
 
 Vue.use(Vuex);
 
@@ -11,13 +12,13 @@ export default new Vuex.Store({
     resetStore(state) {
       Object.assign(state, JSON.parse(localStorage.getItem("initialState")));
     },
-    setUserID(state, id) {
+    setUserID(state, id: string) {
       state.userID = id;
     },
-    setDisplayName(state, name) {
+    setDisplayName(state, name: string) {
       state.displayName = name;
     },
-    setTaskIds(state, user) {
+    setTaskIds(state, user: ChatUsersType) {
       if (user.todo_task_ids !== null) {
         state.todo_task_ids = user.todo_task_ids;
       }
