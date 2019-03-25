@@ -4,7 +4,7 @@ import VueStore from "@/store";
 import draggable from "vuedraggable";
 import uuidv4 from "uuid/v4";
 import TodoTaskComponent from "@/components/todoTask/TodoTask.vue";
-import { TodoTaskType } from "@/interfaces";
+import { TodoTaskType, ChatUsersType } from "@/interfaces";
 
 const todoTaskItems: string = `
 user_id
@@ -48,13 +48,6 @@ export default class TodoComponent extends Vue {
 
   public created() {
     this.queryTasks();
-  }
-
-  /**
-   * ドラッグ開始時の処理
-   */
-  public dragStart() {
-    console.log(this);
   }
 
   /**
@@ -112,26 +105,27 @@ export default class TodoComponent extends Vue {
   }
 
   public checkTaskIDs(taskStatus: string) {
+    const user: ChatUsersType = VueStore.state.user;
     switch (taskStatus) {
       case "Doing":
         return {
           key: "doing_task_ids",
-          store: VueStore.state.doing_task_ids
+          store: user.doing_task_ids
         };
       case "Check":
         return {
           key: "check_task_ids",
-          store: VueStore.state.check_task_ids
+          store: user.check_task_ids
         };
       case "Done":
         return {
           key: "done_task_ids",
-          store: VueStore.state.done_task_ids
+          store: user.done_task_ids
         };
       default:
         return {
           key: "todo_task_ids",
-          store: VueStore.state.todo_task_ids
+          store: user.todo_task_ids
         };
     }
   }
@@ -151,11 +145,12 @@ export default class TodoComponent extends Vue {
     `;
     const result: any = await API.graphql(graphqlOperation(gqlParams));
     const tasks: TodoTaskType[] = result.data.queryTodoTasks.items;
+    const user: ChatUsersType = VueStore.state.user;
     // 取得したTasksを各Statusにpush
     for (const task of tasks) {
       switch (task.status) {
         case "TODO":
-          for (const id of VueStore.state.todo_task_ids) {
+          for (const id of user.todo_task_ids) {
             if (id === task.task_id) {
               this.todoTasks.TODO.push(task);
               break;
@@ -163,7 +158,7 @@ export default class TodoComponent extends Vue {
           }
           break;
         case "Doing":
-          for (const id of VueStore.state.doing_task_ids) {
+          for (const id of user.doing_task_ids) {
             if (id === task.task_id) {
               this.todoTasks.Doing.push(task);
               break;
@@ -171,7 +166,7 @@ export default class TodoComponent extends Vue {
           }
           break;
         case "Check":
-          for (const id of VueStore.state.check_task_ids) {
+          for (const id of user.check_task_ids) {
             if (id === task.task_id) {
               this.todoTasks.Check.push(task);
               break;
@@ -179,7 +174,7 @@ export default class TodoComponent extends Vue {
           }
           break;
         default:
-          for (const id of VueStore.state.done_task_ids) {
+          for (const id of user.done_task_ids) {
             if (id === task.task_id) {
               this.todoTasks.Done.push(task);
               break;

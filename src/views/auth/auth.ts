@@ -62,7 +62,7 @@ export default class AuthComponent extends Vue {
       } else {
         const user: ChatUsersType = await ChatUsers.updateChatUser();
         VueStore.commit("setDisplayName", user.display_name);
-        VueStore.commit("setTaskIds", user);
+        VueStore.commit("setUser", user);
         localStorage.setItem("loginStatus", "logined");
         return router.push("/");
       }
@@ -199,7 +199,7 @@ export default class AuthComponent extends Vue {
       } else {
         const user: ChatUsersType = await ChatUsers.updateChatUser();
         VueStore.commit("setDisplayName", user.display_name);
-        VueStore.commit("setTaskIds", user);
+        VueStore.commit("setUser", user);
         localStorage.setItem("loginStatus", "logined");
         return router.push("/");
       }
