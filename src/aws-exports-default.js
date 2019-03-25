@@ -8,7 +8,12 @@ const awsmobile =  {
   "aws_user_pools_web_client_id": "",
   "aws_appsync_graphqlEndpoint": "",
   "aws_appsync_region": "",
-  "aws_appsync_authenticationType": ""
+  "aws_appsync_authenticationType": "",
+  "oauth": {
+    "CognitoBaseURL": "",
+    "CognitoAppClientID": "",
+    "RedirectURI": ""
+  },
 };
 
 
