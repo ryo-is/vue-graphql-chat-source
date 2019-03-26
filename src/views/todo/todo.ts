@@ -115,7 +115,7 @@ export default class TodoComponent extends Vue {
   public async queryTasks() {
     const gqlParams: string = `
       query queryTasks {
-        queryTodoTasks(user_id: "${VueStore.state.displayName}") {
+        queryTodoTasks(user_id: "${VueStore.state.userID}") {
           items {
             ${todoTaskItems}
           }
@@ -194,7 +194,7 @@ export default class TodoComponent extends Vue {
       mutation createTask {
         createTodoTask(
           input: {
-            user_id: "${VueStore.state.displayName}",
+            user_id: "${VueStore.state.userID}",
             task_id: "${taskID}",
             title: "New Task",
             status: "${taskStatus}"
