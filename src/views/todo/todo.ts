@@ -68,36 +68,15 @@ export default class TodoComponent extends Vue {
       const taskKey: string = this.checkTaskIDs(taskStatus).key;
       const taskIDs: string[] = this.checkTaskIDs(taskStatus).store;
       taskIDs.push(taskID);
-      const gqlUserParams: string = `
-        mutation updateUser {
-          updateChatUsers(
-            input: {
-              user_id: "${VueStore.state.userID}",
-              ${taskKey}: ${this.makeArrayBody(taskIDs)}
-            }
-          ) {
-            ${chatUsersItems}
-          }
-        }
-      `;
+
+      const gqlUserParams: string = this.makeUpdateUserParams(taskKey, taskIDs);
       promises.push(API.graphql(graphqlOperation(gqlUserParams)));
-      const gqlTaskParams: string = `
-        mutation createTask {
-          createTodoTask(
-            input: {
-              user_id: "${VueStore.state.displayName}",
-              task_id: "${taskID}",
-              title: "New Task",
-              status: "${taskStatus}"
-            }
-          ) {
-            ${todoTaskItems}
-          }
-        }
-      `;
+
+      const gqlTaskParams: string = this.makeCreateTaskParams(taskID, taskStatus);
       promises.push(API.graphql(graphqlOperation(gqlTaskParams)));
+
       const result: any = await Promise.all(promises);
-      VueStore.commit("setTaskIds", result[0].data.updateChatUsers);
+      VueStore.commit("setUser", result[0].data.updateChatUsers);
       this.todoTasks[taskStatus].push(result[1].data.createTodoTask);
     } catch (err) {
       console.error(err);
@@ -110,22 +89,22 @@ export default class TodoComponent extends Vue {
       case "Doing":
         return {
           key: "doing_task_ids",
-          store: user.doing_task_ids
+          store: (user.doing_task_ids === null) ? [] : user.doing_task_ids
         };
       case "Check":
         return {
           key: "check_task_ids",
-          store: user.check_task_ids
+          store: (user.check_task_ids === null) ? [] : user.check_task_ids
         };
       case "Done":
         return {
           key: "done_task_ids",
-          store: user.done_task_ids
+          store: (user.done_task_ids === null) ? [] : user.done_task_ids
         };
       default:
         return {
           key: "todo_task_ids",
-          store: user.todo_task_ids
+          store: (user.todo_task_ids === null) ? [] : user.todo_task_ids
         };
     }
   }
@@ -183,6 +162,48 @@ export default class TodoComponent extends Vue {
           break;
       }
     }
+  }
+
+  /**
+   * ユーザー情報を更新するGQLBody生成
+   * @param {String} taskKey
+   * @param {String[]} taskIDs
+   */
+  public makeUpdateUserParams(taskKey: string, taskIDs: string[]) {
+    return `
+      mutation updateUser {
+        updateChatUsers(
+          input: {
+            user_id: "${VueStore.state.userID}",
+            ${taskKey}: ${this.makeArrayBody(taskIDs)}
+          }
+        ) {
+          ${chatUsersItems}
+        }
+      }
+    `;
+  }
+
+  /**
+   * Task作成するGQLBody生成
+   * @param {String} taskID
+   * @param {String} taskStatus
+   */
+  public makeCreateTaskParams(taskID: string, taskStatus: string) {
+    return `
+      mutation createTask {
+        createTodoTask(
+          input: {
+            user_id: "${VueStore.state.displayName}",
+            task_id: "${taskID}",
+            title: "New Task",
+            status: "${taskStatus}"
+          }
+        ) {
+          ${todoTaskItems}
+        }
+      }
+    `;
   }
 
   /**
