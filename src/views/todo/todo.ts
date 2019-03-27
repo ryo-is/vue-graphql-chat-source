@@ -55,7 +55,11 @@ export default class TodoComponent extends Vue {
       `;
       const result: any = await API.graphql(graphqlOperation(params));
       if (result.data.getTaskContents !== null) {
-        this.todoTasks = JSON.parse(result.data.getTaskContents.tasks);
+        const taskContents: {[key: string]: TaskType[]} = JSON.parse(result.data.getTaskContents.tasks);
+        Object.keys(this.todoTasks).forEach((key: string) => {
+          this.todoTasks[key] = taskContents[key];
+        });
+        console.log(this.todoTasks);
       } else {
         this.createTask();
       }
