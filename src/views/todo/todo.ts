@@ -44,7 +44,6 @@ export default class TodoComponent extends Vue {
    */
   public async queryTasks() {
     try {
-      console.log("get Tasks");
       const params: string = `
         query get {
           getTaskContents(room_id: "all") {
