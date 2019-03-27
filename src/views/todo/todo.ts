@@ -4,24 +4,7 @@ import VueStore from "@/store";
 import draggable from "vuedraggable";
 import uuidv4 from "uuid/v4";
 import TodoTaskComponent from "@/components/todoTask/TodoTask.vue";
-import { TodoTaskType, ChatUsersType } from "@/interfaces";
-
-const todoTaskItems: string = `
-user_id
-task_id
-title
-status
-`;
-
-const chatUsersItems: string = `
-user_id,
-last_login,
-display_name
-todo_task_ids
-doing_task_ids
-check_task_ids
-done_task_ids
-`;
+import { TaskType } from "@/interfaces";
 
 @Component({
   components: {
@@ -37,8 +20,7 @@ export default class TodoComponent extends Vue {
     scrollSpeed: 30,
   };
 
-  public todoTaskStatuses: string[] = ["TODO", "Doing", "Check", "Done"];
-  public todoTasks: {[key: string]: TodoTaskType[]} = {
+  public todoTasks: {[key: string]: TaskType[]} = {
     TODO: [],
     Doing: [],
     Check: [],
@@ -58,159 +40,120 @@ export default class TodoComponent extends Vue {
   }
 
   /**
-   * Task作成
-   * @param {String} taskStatus
+   * Task取得
    */
-  public async createTask(taskStatus: string) {
+  public async queryTasks() {
     try {
-      const promises: any[] = [];
-      const taskID: string = uuidv4();
-      const taskKey: string = this.checkTaskIDs(taskStatus).key;
-      const taskIDs: string[] = this.checkTaskIDs(taskStatus).store;
-      taskIDs.push(taskID);
-
-      // ユーザー情報更新
-      const gqlUserParams: string = this.makeUpdateUserParams(taskKey, taskIDs);
-      promises.push(API.graphql(graphqlOperation(gqlUserParams)));
-
-      // Taskの作成
-      const gqlTaskParams: string = this.makeCreateTaskParams(taskID, taskStatus);
-      promises.push(API.graphql(graphqlOperation(gqlTaskParams)));
-
-      // GraphQL実行
-      const result: any = await Promise.all(promises);
-      VueStore.commit("setUser", result[0].data.updateChatUsers);
-      this.todoTasks[taskStatus].push(result[1].data.createTodoTask);
+      console.log("get Tasks");
+      const params: string = `
+        query get {
+          getTaskContents(room_id: "all") {
+            room_id,
+            tasks
+          }
+        }
+      `;
+      const result: any = await API.graphql(graphqlOperation(params));
+      if (result.data.getTaskContents !== null) {
+        this.todoTasks = JSON.parse(result.data.getTaskContents.tasks);
+      } else {
+        this.createTask();
+      }
     } catch (err) {
       console.error(err);
     }
   }
 
   /**
-   * Taskの種別ごとに種別する
-   * @param {String} taskStatus
+   * Task作成
    */
-  public checkTaskIDs(taskStatus: string) {
-    const user: ChatUsersType = VueStore.state.user;
-    switch (taskStatus) {
-      case "Doing":
-        return {
-          key: "doing_task_ids",
-          store: (user.doing_task_ids === null) ? [] : user.doing_task_ids
-        };
-      case "Check":
-        return {
-          key: "check_task_ids",
-          store: (user.check_task_ids === null) ? [] : user.check_task_ids
-        };
-      case "Done":
-        return {
-          key: "done_task_ids",
-          store: (user.done_task_ids === null) ? [] : user.done_task_ids
-        };
-      default:
-        return {
-          key: "todo_task_ids",
-          store: (user.todo_task_ids === null) ? [] : user.todo_task_ids
-        };
+  public async createTask() {
+    try {
+      const params: string = `
+        mutation create {
+          createTaskContents(
+            input: {
+              room_id: "all",
+              tasks: {
+                TODO: [],
+                Doing: [],
+                Check: [],
+                Done: []
+              }
+            }
+          ) {
+            room_id
+          }
+        }
+      `;
+      await API.graphql(graphqlOperation(params));
+    } catch (err) {
+      console.error(err);
     }
   }
 
   /**
-   * Task取得
+   * Task更新
+   * @param {String} taskStatus
    */
-  public async queryTasks() {
-    const gqlParams: string = `
-      query queryTasks {
-        queryTodoTasks(user_id: "${VueStore.state.userID}") {
-          items {
-            ${todoTaskItems}
+  public async updateTask(taskStatus: string) {
+    try {
+      const updateTasks: {[key: string]: TaskType[]} = this.todoTasks;
+      updateTasks[taskStatus].push(
+        {
+          task_id: String(uuidv4()),
+          title: `${taskStatus} test`,
+          description: "hogehoge",
+          create_user: VueStore.state.displayName
+        }
+      );
+      this.makeTasksBody(updateTasks[taskStatus]);
+
+      const params: string = `
+        mutation update {
+          updateTaskContents(
+            input: {
+              room_id: "all",
+              tasks: {
+                TODO: [${this.makeTasksBody(updateTasks["TODO"])}],
+                Doing: [${this.makeTasksBody(updateTasks["Doing"])}],
+                Check: [${this.makeTasksBody(updateTasks["Check"])}],
+                Done: [${this.makeTasksBody(updateTasks["Done"])}]
+              }
+            }
+          ) {
+            room_id,
+            tasks
           }
         }
-      }
-    `;
-    const result: any = await API.graphql(graphqlOperation(gqlParams));
-    const tasks: TodoTaskType[] = result.data.queryTodoTasks.items;
-    const user: ChatUsersType = VueStore.state.user;
-    // 取得したTasksを各Statusにpush
+      `;
+
+      const result: any = await API.graphql(graphqlOperation(params));
+      this.todoTasks = JSON.parse(result.data.updateTaskContents.tasks);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * Taskの Object/Array を文字列に変換
+   * @param {TaskType[]} tasks
+   */
+  public makeTasksBody(tasks: TaskType[]) {
+    console.log(tasks);
+    let returnBody: string = "";
     for (const task of tasks) {
-      switch (task.status) {
-        case "TODO":
-          for (const id of user.todo_task_ids) {
-            if (id === task.task_id) {
-              this.todoTasks.TODO.push(task);
-              break;
-            }
-          }
-          break;
-        case "Doing":
-          for (const id of user.doing_task_ids) {
-            if (id === task.task_id) {
-              this.todoTasks.Doing.push(task);
-              break;
-            }
-          }
-          break;
-        case "Check":
-          for (const id of user.check_task_ids) {
-            if (id === task.task_id) {
-              this.todoTasks.Check.push(task);
-              break;
-            }
-          }
-          break;
-        default:
-          for (const id of user.done_task_ids) {
-            if (id === task.task_id) {
-              this.todoTasks.Done.push(task);
-              break;
-            }
-          }
-          break;
-      }
+      returnBody += `
+        {
+          task_id: "${task.task_id}",
+          title: "${task.title}",
+          description: "${task.description}",
+          create_user: "${task.create_user}"
+        }
+      `;
     }
-  }
-
-  /**
-   * ユーザー情報を更新するGQLBody生成
-   * @param {String} taskKey
-   * @param {String[]} taskIDs
-   */
-  public makeUpdateUserParams(taskKey: string, taskIDs: string[]) {
-    return `
-      mutation updateUser {
-        updateChatUsers(
-          input: {
-            user_id: "${VueStore.state.userID}",
-            ${taskKey}: ${this.makeArrayBody(taskIDs)}
-          }
-        ) {
-          ${chatUsersItems}
-        }
-      }
-    `;
-  }
-
-  /**
-   * Task作成するGQLBody生成
-   * @param {String} taskID
-   * @param {String} taskStatus
-   */
-  public makeCreateTaskParams(taskID: string, taskStatus: string) {
-    return `
-      mutation createTask {
-        createTodoTask(
-          input: {
-            user_id: "${VueStore.state.userID}",
-            task_id: "${taskID}",
-            title: "New Task",
-            status: "${taskStatus}"
-          }
-        ) {
-          ${todoTaskItems}
-        }
-      }
-    `;
+    console.log(returnBody);
+    return returnBody;
   }
 
   /**

@@ -1,7 +1,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
-import { TodoTaskType } from "@/interfaces";
+import { TaskType } from "@/interfaces";
 
 @Component({})
 export default class TodoTaskComponent extends Vue {
-  @Prop() public todoTaskItem: TodoTaskType;
+  @Prop() public todoTaskItem: TaskType;
 }

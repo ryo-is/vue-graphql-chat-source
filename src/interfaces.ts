@@ -4,19 +4,25 @@ export interface ChatMessagesType {
   message_body: string;
 }
 
-export interface TodoTaskType {
-  user_id: string;
+export interface TaskContentsType {
+  room_id: string;
+  tasks: {
+    TODO: TaskType[];
+    Doing: TaskType[];
+    Check: TaskType[];
+    Done: TaskType[];
+  };
+}
+
+export interface TaskType {
   task_id: string;
   title: string;
-  status: string;
+  description: string;
+  create_user: string;
 }
 
 export interface ChatUsersType {
   user_id: string;
   last_login: string;
   display_name: string;
-  todo_task_ids: string[];
-  doing_task_ids: string[];
-  check_task_ids: string[];
-  done_task_ids: string[];
 }
