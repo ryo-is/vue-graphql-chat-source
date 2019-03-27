@@ -37,7 +37,6 @@ export default class TodoComponent extends Vue {
     scrollSpeed: 30,
   };
 
-  public todoTaskIDs: string[] = [];
   public todoTaskStatuses: string[] = ["TODO", "Doing", "Check", "Done"];
   public todoTasks: {[key: string]: TodoTaskType[]} = {
     TODO: [],
@@ -55,6 +54,7 @@ export default class TodoComponent extends Vue {
    */
   public dragEnd() {
     console.log(this.todoTasks);
+    console.log(VueStore.state.user);
   }
 
   /**
@@ -69,12 +69,15 @@ export default class TodoComponent extends Vue {
       const taskIDs: string[] = this.checkTaskIDs(taskStatus).store;
       taskIDs.push(taskID);
 
+      // ユーザー情報更新
       const gqlUserParams: string = this.makeUpdateUserParams(taskKey, taskIDs);
       promises.push(API.graphql(graphqlOperation(gqlUserParams)));
 
+      // Taskの作成
       const gqlTaskParams: string = this.makeCreateTaskParams(taskID, taskStatus);
       promises.push(API.graphql(graphqlOperation(gqlTaskParams)));
 
+      // GraphQL実行
       const result: any = await Promise.all(promises);
       VueStore.commit("setUser", result[0].data.updateChatUsers);
       this.todoTasks[taskStatus].push(result[1].data.createTodoTask);
@@ -83,6 +86,10 @@ export default class TodoComponent extends Vue {
     }
   }
 
+  /**
+   * Taskの種別ごとに種別する
+   * @param {String} taskStatus
+   */
   public checkTaskIDs(taskStatus: string) {
     const user: ChatUsersType = VueStore.state.user;
     switch (taskStatus) {
