@@ -2,12 +2,15 @@
   el-row
     el-col.task-status-list(
       :xs="24", :sm="12", :md="8", :lg="6", :xl="4",
-      v-for="items, index in todoTasks", :key="index")
-      .title {{ index }}
+      v-for="items, status in todoTasks", :key="status")
+      .title {{ status }}
       .task-content-area
         draggable.task-group(
           :options="options", :list="items", group="todo-tasks",
           @end="dragEnd()")
-          TodoTaskComponent(v-for="item in items", :key="item.task_id", :todoTaskItem="item")
+          TodoTaskComponent(
+            v-for="item, index in items", :key="item.task_id",
+            :todoTaskItem="item", :taskStatus="status", :taskIndex="index",
+            v-on:deleteTask="deleteTask")
         .task-group-footer
-          font-awesome-icon.create-task-icon(:icon="['far', 'plus-square']", @click="addTask(index)")
+          font-awesome-icon.create-task-icon(:icon="['far', 'plus-square']", @click="addTask(status)")
