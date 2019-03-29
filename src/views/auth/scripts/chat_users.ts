@@ -6,10 +6,6 @@ const chatUsersItems: string = `
 user_id,
 last_login,
 display_name,
-todo_task_ids,
-doing_task_ids,
-check_task_ids,
-done_task_ids,
 `;
 
 export class ChatUsers {
