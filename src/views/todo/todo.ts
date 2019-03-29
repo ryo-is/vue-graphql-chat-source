@@ -26,6 +26,10 @@ export default class TodoComponent extends Vue {
     Check: [],
     Done: []
   };
+  public displayCreateTaskModal: boolean = false;
+  public selectedTaskStatus: string = "";
+  public inputTaskTitle: string = "";
+  public inputTaskDescription: string = "";
 
   public created() {
     this.queryTasks();
@@ -95,16 +99,15 @@ export default class TodoComponent extends Vue {
 
   /**
    * Task追加
-   * @param {String} taskStatus
    */
-  public addTask(taskStatus: string) {
+  public addTask() {
     try {
       const updateTasks: {[key: string]: TaskType[]} = this.todoTasks;
-      updateTasks[taskStatus].push(
+      updateTasks[this.selectedTaskStatus].push(
         {
           task_id: String(uuidv4()),
-          title: `${taskStatus} test`,
-          description: "hogehoge",
+          title: `${this.inputTaskTitle}`,
+          description: `${this.inputTaskDescription}`,
           create_user: VueStore.state.displayName
         }
       );
@@ -129,6 +132,10 @@ export default class TodoComponent extends Vue {
       });
     } catch (err) {
       console.error(err);
+    } finally {
+      this.displayCreateTaskModal = false;
+      this.inputTaskTitle = "";
+      this.inputTaskDescription = "";
     }
   }
 
