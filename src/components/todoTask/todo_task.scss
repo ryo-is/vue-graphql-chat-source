@@ -5,14 +5,22 @@
   border-radius: 5px;
   box-sizing: border-box;
   color: $basic-dark-color;
-  height: 15%;
+  min-height: 80px;
   margin-bottom: 10px;
-  padding: 5px;
+  padding: .5rem 1rem;
   text-align: left;
 
-  .task-title,
-  .task-status {
-    font-size: 1.1rem;
-    padding-left: 1rem;
+  .task-title {
+    border-left: 3px solid $basic-green-color;
+    font-size: 1.15rem;
+    padding-left: .5rem;
+  }
+
+  .task-description {
+    padding: 0 2rem;
+  }
+
+  .task-create-user {
+    text-align: right;
   }
 }

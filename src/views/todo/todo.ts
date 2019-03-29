@@ -35,8 +35,7 @@ export default class TodoComponent extends Vue {
    * ドラッグ終了時の処理
    */
   public dragEnd() {
-    console.log(this.todoTasks);
-    console.log(VueStore.state.user);
+    this.updateTask();
   }
 
   /**
@@ -44,7 +43,6 @@ export default class TodoComponent extends Vue {
    */
   public async queryTasks() {
     try {
-      console.log("get Tasks");
       const params: string = `
         query get {
           getTaskContents(room_id: "all") {
@@ -59,7 +57,6 @@ export default class TodoComponent extends Vue {
         Object.keys(this.todoTasks).forEach((key: string) => {
           this.todoTasks[key] = taskContents[key];
         });
-        console.log(this.todoTasks);
       } else {
         this.createTask();
       }
@@ -97,10 +94,10 @@ export default class TodoComponent extends Vue {
   }
 
   /**
-   * Task更新
+   * Task追加
    * @param {String} taskStatus
    */
-  public async updateTask(taskStatus: string) {
+  public addTask(taskStatus: string) {
     try {
       const updateTasks: {[key: string]: TaskType[]} = this.todoTasks;
       updateTasks[taskStatus].push(
@@ -111,32 +108,53 @@ export default class TodoComponent extends Vue {
           create_user: VueStore.state.displayName
         }
       );
-      this.makeTasksBody(updateTasks[taskStatus]);
 
-      const params: string = `
-        mutation update {
-          updateTaskContents(
-            input: {
-              room_id: "all",
-              tasks: {
-                TODO: [${this.makeTasksBody(updateTasks["TODO"])}],
-                Doing: [${this.makeTasksBody(updateTasks["Doing"])}],
-                Check: [${this.makeTasksBody(updateTasks["Check"])}],
-                Done: [${this.makeTasksBody(updateTasks["Done"])}]
-              }
-            }
-          ) {
-            room_id,
-            tasks
-          }
-        }
-      `;
-
-      const result: any = await API.graphql(graphqlOperation(params));
-      this.todoTasks = JSON.parse(result.data.updateTaskContents.tasks);
+      this.updateTask();
     } catch (err) {
       console.error(err);
     }
+  }
+
+  /**
+   * Task更新
+   */
+  public async updateTask() {
+    try {
+      const updateTasks: {[key: string]: TaskType[]} = this.todoTasks;
+      const params: string = this.makeUpdateTaskGqlParams(updateTasks);
+      const result: any = await API.graphql(graphqlOperation(params));
+      const taskContents: {[key: string]: TaskType[]} = JSON.parse(result.data.updateTaskContents.tasks);
+      Object.keys(this.todoTasks).forEach((key: string) => {
+        this.todoTasks[key] = taskContents[key];
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * Task追加/更新用のPamameter生成
+   * @param updateTasks
+   */
+  public makeUpdateTaskGqlParams(updateTasks: {[key: string]: TaskType[]}) {
+    return `
+      mutation update {
+        updateTaskContents(
+          input: {
+            room_id: "all",
+            tasks: {
+              TODO: [${this.makeTasksBody(updateTasks["TODO"])}],
+              Doing: [${this.makeTasksBody(updateTasks["Doing"])}],
+              Check: [${this.makeTasksBody(updateTasks["Check"])}],
+              Done: [${this.makeTasksBody(updateTasks["Done"])}]
+            }
+          }
+        ) {
+          room_id,
+          tasks
+        }
+      }
+    `;
   }
 
   /**
@@ -144,7 +162,6 @@ export default class TodoComponent extends Vue {
    * @param {TaskType[]} tasks
    */
   public makeTasksBody(tasks: TaskType[]) {
-    console.log(tasks);
     let returnBody: string = "";
     for (const task of tasks) {
       returnBody += `
@@ -156,7 +173,6 @@ export default class TodoComponent extends Vue {
         }
       `;
     }
-    console.log(returnBody);
     return returnBody;
   }
 
