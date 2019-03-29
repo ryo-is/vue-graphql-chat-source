@@ -1,6 +1,62 @@
 @import "../../config/config";
 
 .todo {
+  position: relative;
+
+  .create-task-modal {
+    align-items: center;
+    background-color: rgba($basic-dark-color, .5);
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    width: 100%;
+
+    .form-area {
+      background-color: $basic-dark-color;
+      border: 1px solid $basic-light-color;
+      border-radius: 10px;
+      height: 320px;
+      padding: 20px 0;
+      position: relative;
+
+      .close-form-icon {
+        cursor: pointer;
+        font-size: 2rem;
+        position: absolute;
+        right: 12px;
+        top: 10px;
+      }
+
+      .input-area {
+        margin: 10px auto;
+        width: 80%;
+
+        .tag {
+          border-left: 5px solid $basic-green-color;
+          color: $basic-light-color;
+          font-size: 1.3rem;
+          margin: 10px 0 ;
+          padding-left: 1rem;
+          text-align: left;
+        }
+
+        .el-input {
+          font-size: 1rem;
+          width: 95%;
+        }
+      }
+
+      .submit-button {
+        font-weight: bold;
+        margin-top: 20px;
+        width: 30%;
+      }
+    }
+  }
+
   .task-status-list {
     height: calc(100vh - 3rem);
     padding: 20px 15px;
