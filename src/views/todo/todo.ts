@@ -133,6 +133,27 @@ export default class TodoComponent extends Vue {
   }
 
   /**
+   * Task削除
+   * @param {String} taskStatus
+   * @param {String} taskIndex
+   */
+  public async deleteTask(taskStatus: string, taskIndex: number) {
+    try {
+      const deletedTasks: {[key: string]: TaskType[]} = this.todoTasks;
+      deletedTasks[taskStatus].splice(taskIndex, 1);
+      console.log(deletedTasks);
+      const params: string = this.makeUpdateTaskGqlParams(deletedTasks);
+      const result: any = await API.graphql(graphqlOperation(params));
+      const taskContents: {[key: string]: TaskType[]} = JSON.parse(result.data.updateTaskContents.tasks);
+      Object.keys(this.todoTasks).forEach((key: string) => {
+        this.todoTasks[key] = taskContents[key];
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
    * Task追加/更新用のPamameter生成
    * @param updateTasks
    */

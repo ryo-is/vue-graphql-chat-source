@@ -1,4 +1,6 @@
 .todo-task
+  font-awesome-icon.close-form-icon(:icon="['fas', 'times']",
+    @click="$emit('deleteTask', taskStatus, taskIndex)")
   .task-title {{ todoTaskItem.title }}
   .task-description {{ todoTaskItem.description }}
   .task-create-user Create by {{ todoTaskItem.create_user }}
